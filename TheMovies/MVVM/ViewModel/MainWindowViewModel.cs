@@ -13,8 +13,8 @@ namespace TheMovies.MVVM.ViewModel
 
         public ObservableCollection<Movie> Movies { get; set; }
 
-		private int movieId;
-		public int MovieId
+		private Guid movieId;
+		public Guid MovieId
 		{
 			get { return movieId; }
 			set { movieId = value; OnPropertyChanged(); }
@@ -75,7 +75,7 @@ namespace TheMovies.MVVM.ViewModel
 		void AddMovie()
 		{
 			//opret objekt og tilføj til repository og observablecollection
-			Movie movie = new Movie(MovieId, MovieTitle, MovieGenre, MovieLength);
+			Movie movie = new Movie(Guid.NewGuid(), MovieTitle, MovieGenre, MovieLength);
 			movieRepository.AddMovie(movie);
 			Movies.Add(movie);
 
