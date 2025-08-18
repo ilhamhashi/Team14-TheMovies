@@ -59,11 +59,11 @@ namespace TheMovies.MVVM.ViewModel
 
         public MainWindowViewModel()
         {
-            /*Movie movie1 = new Movie(MovieId, "borger", "Drama", TimeSpan.FromHours(2));
+            /* Movie movie1 = new Movie(MovieId, "1917", "Drama", TimeSpan.FromHours(2));
 			movieRepository.AddMovie(movie1);
-            Movie movie2 = new Movie(MovieId, "filmen!", "Thriller", TimeSpan.FromHours(1,45));
+            Movie movie2 = new Movie(MovieId, "TEST!", "Thriller", TimeSpan.FromHours(1,45));
 			movieRepository.AddMovie(movie2); */
-
+			
             Movies = new ObservableCollection<Movie>(movieRepository.GetAll());
 
 
@@ -105,6 +105,7 @@ namespace TheMovies.MVVM.ViewModel
         {
 			//fjern moviw i repository 
 			movieRepository.RemoveMovie(SelectedMovie);
+            Movies.Remove(SelectedMovie);
 
             //vis bekræftelse 
             MessageBox.Show($"Ændringerne er gemt", "Udført", MessageBoxButton.OK, MessageBoxImage.Information);
