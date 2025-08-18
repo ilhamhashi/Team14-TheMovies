@@ -40,36 +40,119 @@
                   FontSize="16"
                   Margin="20,20,20,20">
             
+            <!-- Listen kan scrolle, hvis den bliver lang -->
             <ScrollViewer Grid.Row="1" 
-                          VerticalScrollBarVisibility="Auto">
-
-                <DataGrid ItemsSource="{Binding Movies}"
-                          AutoGenerateColumns="False">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="First Name" Binding="{Binding Path= MovieTitle}" FontFamily="Arial" FontStyle="Italic" />
-                        <DataGridTextColumn Header="Last Name" Binding="{Binding Path= MovieGenre}" FontFamily="Arial" FontWeight="Bold" />
-                    </DataGrid.Columns>
-                </DataGrid>
-
-                <!-- DataGrid ItemsSource="{Binding Movies, UpdateSourceTrigger=PropertyChanged}"
+                          VerticalScrollBarVisibility="Auto">          
+                
+                <!-- Listbox oversigt over Movies liste -->
+                <ListBox ItemsSource="{Binding Movies, UpdateSourceTrigger=PropertyChanged}"
                          SelectedItem="{Binding SelectedMovie, UpdateSourceTrigger=PropertyChanged}"
                          HorizontalAlignment="Stretch"
-                         BorderThickness="0"
-                         Background="Transparent">
+                         Background="Transparent"
+                         BorderThickness="0">
 
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Filmtitel" Binding="{Binding XPath=@MovieTitle}" FontFamily="Arial" FontStyle="Italic" />
-                        <DataGridTextColumn Header="Filmgenre" Binding="{Binding XPath=@MovieGenre}" FontFamily="Arial" FontWeight="Bold" />
-                    </DataGrid.Columns>
-                    
-                </DataGrid> -->
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="5" Orientation="Vertical">
+                                
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Filmtitel: "
+                                           FontWeight="Bold" Foreground="AliceBlue"/>
+                                    <TextBlock Text="{Binding Path=title, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                           Foreground="AliceBlue"/>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Filmgenre: "
+                                           FontWeight="DemiBold" FontSize="14" Foreground="AliceBlue"/>
+                                    <TextBlock Text="{Binding Path=genre, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                           Foreground="AliceBlue" FontSize="14"/>
+                                </StackPanel>
+                                
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Filmvarighed: "
+                                           FontWeight="DemiBold" FontSize="14" Foreground="AliceBlue"/>
+                                    <TextBlock Text="{Binding Path=movieLength, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                           Foreground="AliceBlue" FontSize="14" />
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
             </ScrollViewer>
         </GroupBox>
 
-        <!-- Tilføj film -->
+        <StackPanel Grid.Row="1" Grid.Column="1" >
 
+            <!-- Tilføj film -->
+            <GroupBox
+                  Header="Tilføj Film" 
+                  Foreground="AliceBlue" 
+                  FontSize="16"
+                  Margin="20,20,20,20">
 
-        <!-- Opdater/Slet film -->
+                <StackPanel Margin=" 10">
+                    <Label Content="Indtast filmtitel: "
+                           Foreground="AliceBlue"/>
+                    <TextBox Text="{Binding MovieTitle, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                         Height="20"/>
 
+                    <Label Content="Indtast filmgenre: "
+                           Foreground="AliceBlue"/>
+                    <TextBox Text="{Binding MovieGenre, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                         Height="20"/>
+
+                    <Label Content="Indtast filmvarighed: "
+                           Foreground="AliceBlue"/>
+                    <TextBox Text="{Binding MovieLength, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                         Height="20"/>
+
+                    <Button Content="Tilføj"
+                            Command="{Binding AddMovieCommand, UpdateSourceTrigger=PropertyChanged}"
+                            Margin="0,20,0,0"/>
+                </StackPanel>
+
+            </GroupBox>
+
+            <!-- Opdater/Slet film -->
+            <GroupBox 
+                  Header="Opdater/Fjern Film" 
+                  Foreground="AliceBlue" 
+                  FontSize="16"
+                  Margin="20,20,20,20">
+
+                <StackPanel Margin=" 10">
+                    <Label Content="Filmtitel: "
+                           Foreground="AliceBlue"/>
+                    <TextBox Text="{Binding SelectedMovie.title, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                         Height="20"/>
+
+                    <Label Content="Filmgenre: "
+                           Foreground="AliceBlue"/>
+                    <TextBox Text="{Binding SelectedMovie.genre, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                         Height="20"/>
+
+                    <Label Content="Filmvarighed: "
+                           Foreground="AliceBlue"/>
+                    <TextBox Text="{Binding SelectedMovie.movieLength, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                         Height="20"/>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+
+                        <Button Content="Opdater"
+                            Command="{Binding UpdateMovieCommand, UpdateSourceTrigger=PropertyChanged}"
+                            Margin="0,20,20,0"/>
+
+                        <Button Content="Fjern"
+                            Command="{Binding RemoveMovieCommand, UpdateSourceTrigger=PropertyChanged}"
+                            Margin="0,20,0,0"/>
+
+                    </StackPanel>
+
+                </StackPanel>
+            </GroupBox>
+
+        </StackPanel>
     </Grid>
 </Window>
