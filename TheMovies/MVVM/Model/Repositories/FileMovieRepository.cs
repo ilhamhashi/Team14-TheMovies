@@ -15,7 +15,7 @@ namespace TheMovies.MVVM.Model.Repositories
             //Hvis filen ikke eksisterer i forvejen oprettes en ny med kolonnetitler. 
             if (!File.Exists(movieFilePath))
             {
-                File.AppendAllText(movieFilePath, "Filmtitel,Filmgenre,Filmvarighed" + Environment.NewLine);
+                File.AppendAllText(movieFilePath, "FilmID, Filmtitel,Filmgenre,Filmvarighed" + Environment.NewLine);
             }
         }       
 
