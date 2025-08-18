@@ -1,0 +1,9 @@
+﻿sequenceDiagram
+
+    Owner->>UI: Enter (title, genre, movielength)
+    Owner->>UI: Click [Add Movie]
+    UI ->> MainWindowViewModel: AddMovieCommand
+    MainWindowViewModel ->> Movie: AddMovie(title, genre, movielength)
+    MainWindowViewModel ->> FileMovieRepository: AddMovie(Movie)
+    FileMovieRepository -->> UI: ""Title" added!"
+
