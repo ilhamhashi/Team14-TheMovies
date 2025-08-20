@@ -1,7 +1,6 @@
 ﻿
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -31,7 +30,15 @@ namespace TheMovies.MVVM.ViewModel
 			set { movieTitle = value; OnPropertyChanged(); }
 		}
 
-		private string movieGenre;
+        private string movieDirector;
+
+        public string MovieDirector
+        {
+            get { return movieDirector; }
+            set { movieDirector = value; }
+        }
+
+        private string movieGenre;
 		public string MovieGenre
 		{
 			get { return movieGenre; }
@@ -64,12 +71,12 @@ namespace TheMovies.MVVM.ViewModel
             }
         }
 
-
         public ICommand AddMovieCommand { get; }
         public ICommand UpdateMovieCommand { get; }
         public ICommand RemoveMovieCommand { get; }
 
-        private bool CanAddMovie() => !string.IsNullOrWhiteSpace(MovieTitle) && !string.IsNullOrWhiteSpace(MovieGenre) && MovieLength != null;
+        private bool CanAddMovie() => !string.IsNullOrWhiteSpace(MovieTitle) && !string.IsNullOrWhiteSpace(MovieGenre) &&
+                                      !string.IsNullOrWhiteSpace(MovieDirector) && MovieLength != null;
         private bool CanUpdateMovie() => SelectedMovie != null;
         private bool CanRemoveMovie() => SelectedMovie != null;
 
@@ -90,10 +97,10 @@ namespace TheMovies.MVVM.ViewModel
             RemoveMovieCommand = new RelayCommand(_ => RemoveMovie(), _ => CanRemoveMovie());
         }
 
-		pricate void AddMovie()
+		private void AddMovie()
 		{
 			//opret objekt og tilføj til repository og observablecollection
-			Movie movie = new Movie(Guid.NewGuid(), MovieTitle, MovieGenre, MovieLength);
+			Movie movie = new Movie(Guid.NewGuid(), MovieTitle, MovieDirector, MovieGenre, MovieLength);
 			movieRepository.AddMovie(movie);
 			Movies.Add(movie);
 
@@ -102,6 +109,7 @@ namespace TheMovies.MVVM.ViewModel
 
 			//nulstil felter
 			MovieTitle = string.Empty;
+            MovieDirector = string.Empty;
 			MovieGenre = string.Empty;
 			MovieLength = TimeSpan.Zero;
         }
@@ -148,8 +156,8 @@ namespace TheMovies.MVVM.ViewModel
             if (obj is Movie movie)
             {
                 return movie.title.Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase) ||
-                    movie.genre.Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase) || 
-					movie.movieLength.ToString().Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase);
+                       movie.director.Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase) ||
+                       movie.genre.Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase); 
             }
             return false;
         }
