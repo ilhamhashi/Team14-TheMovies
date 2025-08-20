@@ -103,14 +103,25 @@ namespace TheMovies.MVVM.ViewModel
 
         void RemoveMovie()
         {
-			//fjern moviw i repository 
-			movieRepository.RemoveMovie(SelectedMovie);
-            Movies.Remove(SelectedMovie);
 
-            //vis bekræftelse 
-            MessageBox.Show($"Ændringerne er gemt", "Udført", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBoxResult result = MessageBox.Show($"Er du sikker på, at du vil fjerne {SelectedMovie.title}?",
+            "Er du enig?", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
-            //nulstil valgt movie
+			if (result == MessageBoxResult.Yes)
+			{
+                MessageBox.Show($"{SelectedMovie.title} er fjernet fra listen.",
+                                "Udført", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                //fjern movie i repository 
+                movieRepository.RemoveMovie(SelectedMovie);
+                Movies.Remove(SelectedMovie);
+            }
+			else
+			{
+                MessageBox.Show($"Filmen blev ikke fjernet fra listen.",
+								"Annulleret", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+
             SelectedMovie = null;
         }
 
