@@ -1,6 +1,8 @@
 ﻿
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
 using TheMovies.MVVM.Model.Classes;
 using TheMovies.MVVM.Model.Repositories;
@@ -11,10 +13,11 @@ namespace TheMovies.MVVM.ViewModel
     {
         private readonly FileMovieRepository movieRepository = new FileMovieRepository("movies.csv");
 
-        public ObservableCollection<Movie> Movies { get; set; }
+		public ObservableCollection<Movie> Movies;
+        public static ICollectionView MoviesCollectionView { get; set; }
 
-		private int movieId;
-		public int MovieId
+        private Guid movieId;
+		public Guid MovieId
 		{
 			get { return movieId; }
 			set { movieId = value; OnPropertyChanged(); }
@@ -27,7 +30,15 @@ namespace TheMovies.MVVM.ViewModel
 			set { movieTitle = value; OnPropertyChanged(); }
 		}
 
-		private string movieGenre;
+        private string movieDirector;
+
+        public string MovieDirector
+        {
+            get { return movieDirector; }
+            set { movieDirector = value; }
+        }
+
+        private string movieGenre;
 		public string MovieGenre
 		{
 			get { return movieGenre; }
@@ -48,23 +59,37 @@ namespace TheMovies.MVVM.ViewModel
 			set { selectedMovie = value; OnPropertyChanged(); }
 		}
 
+        private string searchTerm = string.Empty;
+        public string SearchTerm
+        {
+            get { return searchTerm; }
+            set
+            {
+                searchTerm = value;
+                OnPropertyChanged(nameof(MoviesFilter));
+                MoviesCollectionView.Refresh();
+            }
+        }
 
-		public ICommand AddMovieCommand { get; }
+        public ICommand AddMovieCommand { get; }
         public ICommand UpdateMovieCommand { get; }
         public ICommand RemoveMovieCommand { get; }
 
-        private bool CanAddMovie() => !string.IsNullOrWhiteSpace(MovieTitle) && !string.IsNullOrWhiteSpace(MovieGenre) && MovieLength != null;
+        private bool CanAddMovie() => !string.IsNullOrWhiteSpace(MovieTitle) && !string.IsNullOrWhiteSpace(MovieGenre) &&
+                                      !string.IsNullOrWhiteSpace(MovieDirector) && MovieLength != null;
         private bool CanUpdateMovie() => SelectedMovie != null;
         private bool CanRemoveMovie() => SelectedMovie != null;
 
         public MainWindowViewModel()
         {
-            /*Movie movie1 = new Movie(MovieId, "borger", "Drama", TimeSpan.FromHours(2));
+            /* Movie movie1 = new Movie(MovieId, "1917", "Drama", TimeSpan.FromHours(2));
 			movieRepository.AddMovie(movie1);
-            Movie movie2 = new Movie(MovieId, "filmen!", "Thriller", TimeSpan.FromHours(1,45));
+            Movie movie2 = new Movie(MovieId, "TEST!", "Thriller", TimeSpan.FromHours(1,45));
 			movieRepository.AddMovie(movie2); */
-
+			
             Movies = new ObservableCollection<Movie>(movieRepository.GetAll());
+            MoviesCollectionView = CollectionViewSource.GetDefaultView(Movies);
+            MoviesCollectionView.Filter = MoviesFilter;
 
 
             AddMovieCommand = new RelayCommand(_ => AddMovie(), _ => CanAddMovie());
@@ -72,10 +97,10 @@ namespace TheMovies.MVVM.ViewModel
             RemoveMovieCommand = new RelayCommand(_ => RemoveMovie(), _ => CanRemoveMovie());
         }
 
-		void AddMovie()
+		private void AddMovie()
 		{
 			//opret objekt og tilføj til repository og observablecollection
-			Movie movie = new Movie(MovieId, MovieTitle, MovieGenre, MovieLength);
+			Movie movie = new Movie(Guid.NewGuid(), MovieTitle, MovieDirector, MovieGenre, MovieLength);
 			movieRepository.AddMovie(movie);
 			Movies.Add(movie);
 
@@ -84,11 +109,12 @@ namespace TheMovies.MVVM.ViewModel
 
 			//nulstil felter
 			MovieTitle = string.Empty;
+            MovieDirector = string.Empty;
 			MovieGenre = string.Empty;
 			MovieLength = TimeSpan.Zero;
         }
 
-        void UpdateMovie()
+        private void UpdateMovie()
         {
 			//opdater movie i repository
             movieRepository.UpdateMovie(SelectedMovie);
@@ -101,16 +127,39 @@ namespace TheMovies.MVVM.ViewModel
 
         }
 
-        void RemoveMovie()
+        private void RemoveMovie()
         {
-			//fjern moviw i repository 
-			movieRepository.RemoveMovie(SelectedMovie);
 
-            //vis bekræftelse 
-            MessageBox.Show($"Ændringerne er gemt", "Udført", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBoxResult result = MessageBox.Show($"Er du sikker på, at du vil fjerne {SelectedMovie.title}?",
+            "Er du enig?", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
-            //nulstil valgt movie
+			if (result == MessageBoxResult.Yes)
+			{
+                MessageBox.Show($"{SelectedMovie.title} er fjernet fra listen.",
+                                "Udført", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                //fjern movie i repository 
+                movieRepository.RemoveMovie(SelectedMovie);
+                Movies.Remove(SelectedMovie);
+            }
+			else
+			{
+                MessageBox.Show($"Filmen blev ikke fjernet fra listen.",
+								"Annulleret", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+
             SelectedMovie = null;
+        }
+
+        private bool MoviesFilter(object obj)
+        {
+            if (obj is Movie movie)
+            {
+                return movie.title.Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase) ||
+                       movie.director.Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase) ||
+                       movie.genre.Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase); 
+            }
+            return false;
         }
 
     }

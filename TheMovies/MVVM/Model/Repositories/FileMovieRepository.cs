@@ -6,7 +6,6 @@ namespace TheMovies.MVVM.Model.Repositories
     class FileMovieRepository : IMovieRepository
     {
         private readonly string movieFilePath;
-        private int movieIdCounter = 1;
 
         public FileMovieRepository(string filePath)
         {
@@ -15,7 +14,7 @@ namespace TheMovies.MVVM.Model.Repositories
             //Hvis filen ikke eksisterer i forvejen oprettes en ny med kolonnetitler. 
             if (!File.Exists(movieFilePath))
             {
-                File.AppendAllText(movieFilePath, "Filmtitel,Filmgenre,Filmvarighed" + Environment.NewLine);
+                File.AppendAllText(movieFilePath, "FilmID, Filmtitel,Filmgenre,Filmvarighed" + Environment.NewLine);
             }
         }       
 
@@ -40,7 +39,6 @@ namespace TheMovies.MVVM.Model.Repositories
         {
             try
             {
-                movie.id = movieIdCounter++;
                 File.AppendAllText(movieFilePath, movie.ToString() + Environment.NewLine);
             }
             catch (Exception ex)
@@ -71,7 +69,9 @@ namespace TheMovies.MVVM.Model.Repositories
         {
             try
             {
-                File.WriteAllLines(movieFilePath, movies.Select(m => m.ToString()));
+                List<string> moviesList = movies.Select(m => m.ToString()).ToList();
+                moviesList.Insert(0, "Filmnummer, Filmtitel, Filmgenre, Filmvarighed");
+                File.WriteAllLines(movieFilePath, moviesList);
             }
             catch (IOException ex)
             {
