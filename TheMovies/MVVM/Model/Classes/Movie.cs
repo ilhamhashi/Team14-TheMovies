@@ -20,7 +20,7 @@
 
         public override string ToString()
         {
-            return $"{id},{title},{director}, {genre},{movieLength}";
+            return $"{id},{title},{director},{genre},{movieLength}";
         }
 
         public static Movie FromString(string input)
