@@ -45,7 +45,7 @@
                           VerticalScrollBarVisibility="Auto">          
                 
                 <!-- Listbox oversigt over Movies liste -->
-                <ListBox ItemsSource="{Binding Movies, UpdateSourceTrigger=PropertyChanged}"
+                <ListBox ItemsSource="{Binding MoviesCollectionView, UpdateSourceTrigger=PropertyChanged}"
                          SelectedItem="{Binding SelectedMovie, UpdateSourceTrigger=PropertyChanged}"
                          HorizontalAlignment="Stretch"
                          Background="Transparent"
@@ -84,7 +84,17 @@
         </GroupBox>
 
         <StackPanel Grid.Row="1" Grid.Column="1" >
-
+            <GroupBox
+      Header="Søg" 
+      Foreground="AliceBlue" 
+      FontSize="16"
+      Margin="20,20,20,20">
+            <TextBox Text="{Binding SearchTerm, UpdateSourceTrigger=PropertyChanged}"
+                         Background="Transparent"
+                         Foreground="AliceBlue"
+                         BorderThickness="0"/>
+            </GroupBox>
+            
             <!-- Tilføj film -->
             <GroupBox
                   Header="Tilføj Film" 
@@ -96,6 +106,10 @@
                     <Label Content="Indtast filmtitel: "
                            Foreground="AliceBlue"/>
                     <TextBox Text="{Binding MovieTitle, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                         Height="20"/>
+                    <Label Content="Indtast filminstruktør: "
+                           Foreground="AliceBlue"/>
+                    <TextBox Text="{Binding MovieDirector, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                          Height="20"/>
 
                     <Label Content="Indtast filmgenre: "
