@@ -1,6 +1,9 @@
 ﻿
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Reflection;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
 using TheMovies.MVVM.Model.Classes;
 using TheMovies.MVVM.Model.Repositories;
@@ -11,9 +14,10 @@ namespace TheMovies.MVVM.ViewModel
     {
         private readonly FileMovieRepository movieRepository = new FileMovieRepository("movies.csv");
 
-        public ObservableCollection<Movie> Movies { get; set; }
+		public ObservableCollection<Movie> Movies;
+        public static ICollectionView MoviesCollectionView { get; set; }
 
-		private Guid movieId;
+        private Guid movieId;
 		public Guid MovieId
 		{
 			get { return movieId; }
@@ -48,8 +52,20 @@ namespace TheMovies.MVVM.ViewModel
 			set { selectedMovie = value; OnPropertyChanged(); }
 		}
 
+        private string searchTerm = string.Empty;
+        public string SearchTerm
+        {
+            get { return searchTerm; }
+            set
+            {
+                searchTerm = value;
+                OnPropertyChanged(nameof(MoviesFilter));
+                MoviesCollectionView.Refresh();
+            }
+        }
 
-		public ICommand AddMovieCommand { get; }
+
+        public ICommand AddMovieCommand { get; }
         public ICommand UpdateMovieCommand { get; }
         public ICommand RemoveMovieCommand { get; }
 
@@ -65,6 +81,8 @@ namespace TheMovies.MVVM.ViewModel
 			movieRepository.AddMovie(movie2); */
 			
             Movies = new ObservableCollection<Movie>(movieRepository.GetAll());
+            MoviesCollectionView = CollectionViewSource.GetDefaultView(Movies);
+            MoviesCollectionView.Filter = MoviesFilter;
 
 
             AddMovieCommand = new RelayCommand(_ => AddMovie(), _ => CanAddMovie());
@@ -112,6 +130,17 @@ namespace TheMovies.MVVM.ViewModel
 
             //nulstil valgt movie
             SelectedMovie = null;
+        }
+
+        private bool MoviesFilter(object obj)
+        {
+            if (obj is Movie movie)
+            {
+                return movie.title.Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase) ||
+                    movie.genre.Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase) || 
+					movie.movieLength.ToString().Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase);
+            }
+            return false;
         }
 
     }
