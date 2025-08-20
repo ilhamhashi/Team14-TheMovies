@@ -90,7 +90,7 @@ namespace TheMovies.MVVM.ViewModel
             RemoveMovieCommand = new RelayCommand(_ => RemoveMovie(), _ => CanRemoveMovie());
         }
 
-		void AddMovie()
+		pricate void AddMovie()
 		{
 			//opret objekt og tilføj til repository og observablecollection
 			Movie movie = new Movie(Guid.NewGuid(), MovieTitle, MovieGenre, MovieLength);
@@ -106,7 +106,7 @@ namespace TheMovies.MVVM.ViewModel
 			MovieLength = TimeSpan.Zero;
         }
 
-        void UpdateMovie()
+        private void UpdateMovie()
         {
 			//opdater movie i repository
             movieRepository.UpdateMovie(SelectedMovie);
@@ -119,7 +119,7 @@ namespace TheMovies.MVVM.ViewModel
 
         }
 
-        void RemoveMovie()
+        private void RemoveMovie()
         {
 			//fjern moviw i repository 
 			movieRepository.RemoveMovie(SelectedMovie);
