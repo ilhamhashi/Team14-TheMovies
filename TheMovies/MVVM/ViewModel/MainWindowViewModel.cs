@@ -75,6 +75,7 @@ namespace TheMovies.MVVM.ViewModel
 
         public ICommand AddMovieCommand { get; }
         public ICommand OpenWindowCommand { get; }
+        public ICommand OpenPrintWindowCommand { get; }
         public ICommand UpdateMovieCommand { get; }
         public ICommand RemoveMovieCommand { get; }
 
@@ -95,6 +96,7 @@ namespace TheMovies.MVVM.ViewModel
             MoviesCollectionView.Filter = MoviesFilter;
 
             OpenWindowCommand = new RelayCommand(_ => OpenWindow(), _ => true);
+            OpenPrintWindowCommand = new RelayCommand(_ => OpenPrintWindow(), _ => true);
             AddMovieCommand = new RelayCommand(_ => AddMovie(), _ => CanAddMovie());
             UpdateMovieCommand = new RelayCommand(_ => UpdateMovie(), _ => CanUpdateMovie());
             RemoveMovieCommand = new RelayCommand(_ => RemoveMovie(), _ => CanRemoveMovie());
@@ -169,6 +171,12 @@ namespace TheMovies.MVVM.ViewModel
         {
             MovieProgramView movieProgramView = new MovieProgramView();
             movieProgramView.Show();
+        }
+
+        private void OpenPrintWindow()
+        {
+            PrintView printView = new PrintView();
+            printView.Show();
         }
     }
 }

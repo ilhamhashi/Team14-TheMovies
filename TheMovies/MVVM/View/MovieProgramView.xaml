@@ -15,53 +15,37 @@
     <Grid>
 
         <StackPanel>
-            <Button Content="Print"
-                    Click="OnListBoxPrinting"
-                    Width="80" Height="30" />
+            <Button Content="Udkriv FilmProgram"
+                    Command="{Binding OpenPrintWindowCommand}"
+                    Width="150" Height="30" />
             
-            <ListBox x:Name="MovieProgramTable"                      
+            <GroupBox>
+                <ListBox x:Name="MovieProgramTable"                      
                          ItemsSource="{Binding MovieProgramCollectionView, UpdateSourceTrigger=PropertyChanged}"
                          SelectedItem="{Binding SelectedMovieProgram, UpdateSourceTrigger=PropertyChanged}"
                          HorizontalAlignment="Stretch"
                          Background="#272537"
                          BorderThickness="0">
 
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Margin="5" Orientation="Vertical">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="5" Orientation="Vertical">
 
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Filmtitel: "
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Biograf: "
                                            FontWeight="Bold" Foreground="AliceBlue"/>
-                                <TextBlock Text="{Binding Path=title, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                    <TextBlock Text="{Binding Path=Cinema.Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
                                            Foreground="AliceBlue"/>
-                            </StackPanel>
+                                </StackPanel>
 
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Instruktør: "
-                                           FontWeight="DemiBold" FontSize="14" Foreground="AliceBlue"/>
-                                <TextBlock Text="{Binding Path=director, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
-                                           Foreground="AliceBlue"/>
                             </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
 
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Filmgenre: "
-                                           FontWeight="DemiBold" FontSize="14" Foreground="AliceBlue"/>
-                                <TextBlock Text="{Binding Path=genre, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
-                                           Foreground="AliceBlue" FontSize="14"/>
-                            </StackPanel>
+            </GroupBox>
 
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Filmvarighed: "
-                                           FontWeight="DemiBold" FontSize="14" Foreground="AliceBlue"/>
-                                <TextBlock Text="{Binding Path=movieLength, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
-                                           Foreground="AliceBlue" FontSize="14" />
-                            </StackPanel>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
         </StackPanel>
-        
+
     </Grid>
 </Window>
