@@ -24,7 +24,8 @@
             return $"{Id},{Duration},{ShowTime},{PremiereDate},{Movie},{Cinema}";
         }
 
-        public MovieProgram FromString(string input)
+        // Ændret til en static metode for at kunne kalde den direkte uden en instans
+        public static MovieProgram FromString(string input) 
         {
             string[] parts = input.Split(',');
             return new MovieProgram
@@ -33,8 +34,8 @@
                 TimeSpan.Parse(parts[1]),
                 DateTime.Parse(parts[2]),
                 DateOnly.Parse(parts[3]),
-                Movie = new Movie (Guid.Parse(parts[4]), parts[5], parts[6], parts[7], TimeSpan.Parse(parts[8])),
-                Cinema = new Cinema (Guid.Parse(parts[9]), parts[10], parts[11], int.Parse(parts[12]))
+                new Movie (Guid.Parse(parts[4]), parts[5], parts[6], parts[7], TimeSpan.Parse(parts[8])), /* Behøver kun kan kalde på konstruktør */
+                new Cinema (Guid.Parse(parts[9]), parts[10], parts[11], int.Parse(parts[12])) /* Behøver kun kan kalde på konstruktør */
             );
         }
     }
