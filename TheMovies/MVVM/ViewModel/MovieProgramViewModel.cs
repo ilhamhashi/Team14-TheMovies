@@ -1,8 +1,10 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Data;
+using System.Windows.Input;
 using TheMovies.MVVM.Model.Classes;
 using TheMovies.MVVM.Model.Repositories;
+using TheMovies.MVVM.View;
 
 namespace TheMovies.MVVM.ViewModel
 {
@@ -38,6 +40,9 @@ namespace TheMovies.MVVM.ViewModel
             }
         }
 
+
+        public ICommand OpenPrintWindowCommand { get; }
+
         public MovieProgramViewModel()
         {
             MoviePrograms = new ObservableCollection<MovieProgram>(movieProgramRepository.GetAll());
@@ -45,6 +50,8 @@ namespace TheMovies.MVVM.ViewModel
 
             PrintCollectionView = CollectionViewSource.GetDefaultView(MoviePrograms);
             PrintCollectionView.Filter = PrintFilter;
+
+            OpenPrintWindowCommand = new RelayCommand(_ => OpenPrintWindow(), _ => true);
         }
         
         private bool PrintFilter(object obj)
@@ -55,6 +62,12 @@ namespace TheMovies.MVVM.ViewModel
                        movieProgram.ShowTime.Month.ToString().Equals(SelectedMonth.Month.ToString(), StringComparison.InvariantCultureIgnoreCase);
             }
             return false;
+        }
+
+        private void OpenPrintWindow()
+        {
+            PrintView printView = new PrintView();
+            printView.Show();
         }
     }
 }
