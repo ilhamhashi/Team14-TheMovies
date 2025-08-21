@@ -4,9 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TheMovies.MVVM.View"
+        xmlns:ViewModel="clr-namespace:TheMovies.MVVM.ViewModel"
         mc:Ignorable="d"
         Title="PrintView" Height="500" Width="500"
         Background="#272537">
+    <Window.DataContext>
+        <ViewModel:MovieProgramViewModel/>
+    </Window.DataContext>
     <Grid>
 
         <StackPanel>

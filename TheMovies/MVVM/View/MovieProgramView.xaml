@@ -10,7 +10,7 @@
         Background="#272537">
 
     <Window.DataContext>
-        <ViewModel:MainWindowViewModel/>
+        <ViewModel:MovieProgramViewModel/>
     </Window.DataContext>
     <Grid>
 
