@@ -5,10 +5,10 @@ namespace TheMovies.MVVM.Model.Repositories
 {
     interface IMovieRepository
     {
-        IEnumerable<Movie> GetAll();
-        void AddMovie(Movie movie);
-        void RemoveMovie(Movie movie);
-        void UpdateMovie(Movie movie);
+        IEnumerable<Moviepr> GetAll();
+        void AddMovie(Moviepr movie);
+        void RemoveMovie(Moviepr movie);
+        void UpdateMovie(Moviepr movie);
 
     }
 }

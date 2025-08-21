@@ -23,9 +23,9 @@ namespace TheMovies.MVVM.View
             {
                 Size pageSize = new Size(Printdlg.PrintableAreaWidth, Printdlg.PrintableAreaHeight);
                 // sizing of the element.
-                MovieProgramTable.Measure(pageSize);
+                /*MovieProgramTable.Measure(pageSize);
                 MovieProgramTable.Arrange(new Rect(5, 5, pageSize.Width, pageSize.Height));
-                Printdlg.PrintVisual(MovieProgramTable, Title);
+                Printdlg.PrintVisual(MovieProgramTable, Title);*/
             }
         }
 

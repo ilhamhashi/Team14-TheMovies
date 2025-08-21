@@ -18,14 +18,14 @@ namespace TheMovies.MVVM.Model.Repositories
             }
         }       
 
-        public IEnumerable<Movie> GetAll()
+        public IEnumerable<Moviepr> GetAll()
         {
             try
             {
                 return File.ReadAllLines(movieFilePath)
                            .Skip(1)
                            .Where(line => !string.IsNullOrEmpty(line)) // Undgå tomme linjer
-                           .Select(Movie.FromString)
+                           .Select(Moviepr.FromString)
                            .ToList();
             }
             catch (IOException ex)
@@ -35,7 +35,7 @@ namespace TheMovies.MVVM.Model.Repositories
             }
         }
 
-        public void AddMovie(Movie movie)
+        public void AddMovie(Moviepr movie)
         {
             try
             {
@@ -47,16 +47,16 @@ namespace TheMovies.MVVM.Model.Repositories
             }
         }
 
-        public void RemoveMovie(Movie movie)
+        public void RemoveMovie(Moviepr movie)
         {
-            List<Movie> movies = GetAll().ToList();
+            List<Moviepr> movies = GetAll().ToList();
             movies.RemoveAll(m => m.id  == movie.id);
             RewriteFile(movies);
         }
 
-        public void UpdateMovie(Movie movie)
+        public void UpdateMovie(Moviepr movie)
         {
-            List<Movie> movies = GetAll().ToList();
+            List<Moviepr> movies = GetAll().ToList();
             int index = movies.FindIndex(m => m.id == movie.id);
             if (index != -1)
             {
@@ -65,7 +65,7 @@ namespace TheMovies.MVVM.Model.Repositories
             }
         }
 
-        private void RewriteFile(List<Movie> movies)
+        private void RewriteFile(List<Moviepr> movies)
         {
             try
             {

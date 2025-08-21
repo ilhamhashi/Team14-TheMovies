@@ -1,6 +1,6 @@
 ﻿namespace TheMovies.MVVM.Model.Classes
 {
-    class Movie
+    class Moviepr
     {
         //ændre gerne til private properties (encapsulation)
         public Guid id { get; set; }
@@ -9,7 +9,7 @@
         public string genre { get; set; }
         public TimeSpan movieLength { get; set; }
 
-        public Movie(Guid id, string title, string director, string genre, TimeSpan movieLength)
+        public Moviepr(Guid id, string title, string director, string genre, TimeSpan movieLength)
         {
             this.id = id;
             this.title = title;
@@ -23,10 +23,10 @@
             return $"{id},{title},{director},{genre},{movieLength}";
         }
 
-        public static Movie FromString(string input)
+        public static Moviepr FromString(string input)
         {
             string[] parts = input.Split(',');
-            return new Movie
+            return new Moviepr
             (                
                 Guid.Parse(parts[0]),
                 parts[1],

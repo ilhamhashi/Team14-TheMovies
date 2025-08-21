@@ -15,7 +15,7 @@ namespace TheMovies.MVVM.ViewModel
     {
         private readonly FileMovieRepository movieRepository = new FileMovieRepository("movies.csv");
 
-		public ObservableCollection<Movie> Movies;
+		public ObservableCollection<Moviepr> Movies;
         public static ICollectionView MoviesCollectionView { get; set; }
 
         private Guid movieId;
@@ -54,8 +54,8 @@ namespace TheMovies.MVVM.ViewModel
 			set { movieLength = value; OnPropertyChanged(); }
 		}
 
-		private Movie selectedMovie;
-		public Movie SelectedMovie
+		private Moviepr selectedMovie;
+		public Moviepr SelectedMovie
 		{
 			get { return selectedMovie; }
 			set { selectedMovie = value; OnPropertyChanged(); }
@@ -90,7 +90,7 @@ namespace TheMovies.MVVM.ViewModel
             Movie movie2 = new Movie(MovieId, "TEST!", "Thriller", TimeSpan.FromHours(1,45));
 			movieRepository.AddMovie(movie2); */
 			
-            Movies = new ObservableCollection<Movie>(movieRepository.GetAll());
+            Movies = new ObservableCollection<Moviepr>(movieRepository.GetAll());
             MoviesCollectionView = CollectionViewSource.GetDefaultView(Movies);
             MoviesCollectionView.Filter = MoviesFilter;
 
@@ -103,7 +103,7 @@ namespace TheMovies.MVVM.ViewModel
 		private void AddMovie()
 		{
 			//opret objekt og tilføj til repository og observablecollection
-			Movie movie = new Movie(Guid.NewGuid(), MovieTitle, MovieDirector, MovieGenre, MovieLength);
+			Moviepr movie = new Moviepr(Guid.NewGuid(), MovieTitle, MovieDirector, MovieGenre, MovieLength);
 			movieRepository.AddMovie(movie);
 			Movies.Add(movie);
 
@@ -156,7 +156,7 @@ namespace TheMovies.MVVM.ViewModel
 
         private bool MoviesFilter(object obj)
         {
-            if (obj is Movie movie)
+            if (obj is Moviepr movie)
             {
                 return movie.title.Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase) ||
                        movie.director.Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase) ||
