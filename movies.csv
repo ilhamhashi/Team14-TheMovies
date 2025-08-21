@@ -1,11 +1,1 @@
-Filmtitel,Filmgenre,Filmvarighed
-1,borger,Drama,02:00:00
-2,filmen!,Thriller,01:45:00
-1,borger,Drama,02:00:00
-2,filmen!,Thriller,01:45:00
-1,1917,Drama,02:00:00
-2,TEST!,Thriller,01:45:00
-1,1917,Drama,02:00:00
-2,TEST!,Thriller,01:45:00
-1,1917,Drama,02:00:00
-2,TEST!,Thriller,01:45:00
+FilmID, Filmtitel,Filmgenre,Filmvarighed

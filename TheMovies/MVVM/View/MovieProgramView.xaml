@@ -1,0 +1,67 @@
+﻿<Window x:Class="TheMovies.MVVM.View.MovieProgramView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TheMovies.MVVM.View"
+        xmlns:ViewModel="clr-namespace:TheMovies.MVVM.ViewModel"
+        mc:Ignorable="d"
+        Title="MovieProgramView" Height="800" Width="800"
+        Background="#272537">
+
+    <Window.DataContext>
+        <ViewModel:MainWindowViewModel/>
+    </Window.DataContext>
+    <Grid>
+
+        <StackPanel>
+            <Button Content="Print"
+                    Click="OnListBoxPrinting"
+                    Width="80" Height="30" />
+            
+            <ListBox x:Name="MovieProgramTable"                      
+                         ItemsSource="{Binding MovieProgramCollectionView, UpdateSourceTrigger=PropertyChanged}"
+                         SelectedItem="{Binding SelectedMovieProgram, UpdateSourceTrigger=PropertyChanged}"
+                         HorizontalAlignment="Stretch"
+                         Background="#272537"
+                         BorderThickness="0">
+
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Margin="5" Orientation="Vertical">
+
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Filmtitel: "
+                                           FontWeight="Bold" Foreground="AliceBlue"/>
+                                <TextBlock Text="{Binding Path=title, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                           Foreground="AliceBlue"/>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Instruktør: "
+                                           FontWeight="DemiBold" FontSize="14" Foreground="AliceBlue"/>
+                                <TextBlock Text="{Binding Path=director, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                           Foreground="AliceBlue"/>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Filmgenre: "
+                                           FontWeight="DemiBold" FontSize="14" Foreground="AliceBlue"/>
+                                <TextBlock Text="{Binding Path=genre, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                           Foreground="AliceBlue" FontSize="14"/>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Filmvarighed: "
+                                           FontWeight="DemiBold" FontSize="14" Foreground="AliceBlue"/>
+                                <TextBlock Text="{Binding Path=movieLength, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                           Foreground="AliceBlue" FontSize="14" />
+                            </StackPanel>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </StackPanel>
+        
+    </Grid>
+</Window>
