@@ -6,14 +6,14 @@
         xmlns:local="clr-namespace:TheMovies"
         xmlns:ViewModel="clr-namespace:TheMovies.MVVM.ViewModel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="800" Width="800"
+        Title="MainWindow" Height="800" Width="900"
         Background="#272537">
     <Window.DataContext>
         <ViewModel:MainWindowViewModel/>
     </Window.DataContext>
-    
+
     <Grid>
-        
+
         <!-- Definerer rækker -->
         <Grid.RowDefinitions>
             <RowDefinition Height="100"/>
@@ -22,8 +22,8 @@
 
         <!-- Definerer kolonner -->
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="450"/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="45*"/>
+            <ColumnDefinition Width="55*"/>
         </Grid.ColumnDefinitions>
 
         <!-- Overskrift -->
@@ -32,6 +32,10 @@
                FontSize="30"
                FontWeight="DemiBold"
                Margin="20,20,20,20"/>
+        
+        <Button Grid.Column="1" 
+                Content="Tilføj" 
+                Command="{Binding OpenWindowCommand, UpdateSourceTrigger=PropertyChanged}"/>
 
         <!-- Filmliste -->
         <GroupBox Grid.Row="1" 
@@ -42,10 +46,11 @@
             
             <!-- Listen kan scrolle, hvis den bliver lang -->
             <ScrollViewer Grid.Row="1" 
-                          VerticalScrollBarVisibility="Auto">          
-                
+                          VerticalScrollBarVisibility="Auto">
+
                 <!-- Listbox oversigt over Movies liste -->
-                <ListBox ItemsSource="{Binding MoviesCollectionView, UpdateSourceTrigger=PropertyChanged}"
+                <ListBox Name="MoviesList" 
+                         ItemsSource="{Binding MoviesCollectionView, UpdateSourceTrigger=PropertyChanged}"
                          SelectedItem="{Binding SelectedMovie, UpdateSourceTrigger=PropertyChanged}"
                          HorizontalAlignment="Stretch"
                          Background="Transparent"
@@ -54,11 +59,18 @@
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Margin="5" Orientation="Vertical">
-                                
+
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="Filmtitel: "
                                            FontWeight="Bold" Foreground="AliceBlue"/>
                                     <TextBlock Text="{Binding Path=title, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                           Foreground="AliceBlue"/>
+                                </StackPanel>
+                                
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Instruktør: "
+                                           FontWeight="DemiBold" FontSize="14" Foreground="AliceBlue"/>
+                                    <TextBlock Text="{Binding Path=director, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
                                            Foreground="AliceBlue"/>
                                 </StackPanel>
 
@@ -68,7 +80,7 @@
                                     <TextBlock Text="{Binding Path=genre, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
                                            Foreground="AliceBlue" FontSize="14"/>
                                 </StackPanel>
-                                
+
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="Filmvarighed: "
                                            FontWeight="DemiBold" FontSize="14" Foreground="AliceBlue"/>
@@ -84,23 +96,24 @@
         </GroupBox>
 
         <StackPanel Grid.Row="1" Grid.Column="1" >
-            <GroupBox
-      Header="Søg" 
-      Foreground="AliceBlue" 
-      FontSize="16"
-      Margin="20,20,20,20">
-            <TextBox Text="{Binding SearchTerm, UpdateSourceTrigger=PropertyChanged}"
+            <GroupBox Header="Søg" 
+                      Foreground="AliceBlue" 
+                      FontSize="16"
+                      Margin="20,20,20,0">
+                
+                <TextBox Text="{Binding SearchTerm, UpdateSourceTrigger=PropertyChanged}"
                          Background="Transparent"
                          Foreground="AliceBlue"
-                         BorderThickness="0"/>
+                         BorderThickness="0"
+                         CaretBrush="AliceBlue"/>
             </GroupBox>
-            
+
             <!-- Tilføj film -->
             <GroupBox
                   Header="Tilføj Film" 
                   Foreground="AliceBlue" 
                   FontSize="16"
-                  Margin="20,20,20,20">
+                  Margin="20,10,20,0">
 
                 <StackPanel Margin=" 10">
                     <Label Content="Indtast filmtitel: "
@@ -134,12 +147,17 @@
                   Header="Opdater/Fjern Film" 
                   Foreground="AliceBlue" 
                   FontSize="16"
-                  Margin="20,20,20,20">
+                  Margin="20,10,20,0">
 
                 <StackPanel Margin=" 10">
                     <Label Content="Filmtitel: "
                            Foreground="AliceBlue"/>
                     <TextBox Text="{Binding SelectedMovie.title, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                         Height="20"/>
+                    
+                    <Label Content="Instruktør: "
+                           Foreground="AliceBlue"/>
+                    <TextBox Text="{Binding SelectedMovie.director, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                          Height="20"/>
 
                     <Label Content="Filmgenre: "

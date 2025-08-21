@@ -2,10 +2,12 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using TheMovies.MVVM.Model.Classes;
 using TheMovies.MVVM.Model.Repositories;
+using TheMovies.MVVM.View;
 
 namespace TheMovies.MVVM.ViewModel
 {
@@ -72,6 +74,7 @@ namespace TheMovies.MVVM.ViewModel
         }
 
         public ICommand AddMovieCommand { get; }
+        public ICommand OpenWindowCommand { get; }
         public ICommand UpdateMovieCommand { get; }
         public ICommand RemoveMovieCommand { get; }
 
@@ -91,7 +94,7 @@ namespace TheMovies.MVVM.ViewModel
             MoviesCollectionView = CollectionViewSource.GetDefaultView(Movies);
             MoviesCollectionView.Filter = MoviesFilter;
 
-
+            OpenWindowCommand = new RelayCommand(_ => OpenWindow(), _ => true);
             AddMovieCommand = new RelayCommand(_ => AddMovie(), _ => CanAddMovie());
             UpdateMovieCommand = new RelayCommand(_ => UpdateMovie(), _ => CanUpdateMovie());
             RemoveMovieCommand = new RelayCommand(_ => RemoveMovie(), _ => CanRemoveMovie());
@@ -162,5 +165,10 @@ namespace TheMovies.MVVM.ViewModel
             return false;
         }
 
+        private void OpenWindow()
+        {
+            MovieProgramView movieProgramView = new MovieProgramView();
+            movieProgramView.Show();
+        }
     }
 }
