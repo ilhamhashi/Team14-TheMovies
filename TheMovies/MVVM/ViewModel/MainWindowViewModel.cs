@@ -170,5 +170,6 @@ namespace TheMovies.MVVM.ViewModel
             MovieProgramView movieProgramView = new MovieProgramView();
             movieProgramView.Show();
         }
+
     }
 }
