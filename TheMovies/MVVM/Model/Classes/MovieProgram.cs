@@ -24,7 +24,7 @@
             return $"{Id},{Duration},{ShowTime},{PremiereDate},{Movie},{Cinema}";
         }
 
-        public MovieProgram FromString(string input)
+        public static MovieProgram FromString(string input)
         {
             string[] parts = input.Split(',');
             return new MovieProgram

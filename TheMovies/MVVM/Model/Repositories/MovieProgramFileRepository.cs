@@ -53,6 +53,24 @@ namespace TheMovies.MVVM.Model.Repositories
             }
         }
 
+        public void RemoveMovieProgram(MovieProgram movieProgram)
+        {
+            List<MovieProgram> moviePrograms = GetAll().ToList();
+            moviePrograms.RemoveAll(mp => mp.Id == movieProgram.Id);
+            RewriteFile(moviePrograms);
+        }
+
+        public void UpdateMovieProgram(MovieProgram movieProgram)
+        {
+            List<MovieProgram> moviePrograms = GetAll().ToList();
+            int index = moviePrograms.FindIndex(mp => mp.Id == movieProgram.Id);
+            if (index != -1)
+            {
+                moviePrograms[index] = movieProgram;
+                RewriteFile(moviePrograms);
+            }
+        }
+
         private void RewriteFile(List<MovieProgram> moviePrograms)
         {
             try

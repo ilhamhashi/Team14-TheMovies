@@ -35,7 +35,11 @@
         
         <Button Grid.Column="1" 
                 Content="Tilføj" 
-                Command="{Binding OpenWindowCommand, UpdateSourceTrigger=PropertyChanged}"/>
+                Command="{Binding OpenWindowCommand, 
+                UpdateSourceTrigger=PropertyChanged}"
+                Width="150" Height="30"
+                HorizontalAlignment="Right"
+                Margin="0 0 50 0"/>
 
         <!-- Filmliste -->
         <GroupBox Grid.Row="1" 

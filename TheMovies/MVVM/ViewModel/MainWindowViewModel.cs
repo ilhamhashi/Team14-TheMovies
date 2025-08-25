@@ -33,7 +33,6 @@ namespace TheMovies.MVVM.ViewModel
 		}
 
         private string movieDirector;
-
         public string MovieDirector
         {
             get { return movieDirector; }
