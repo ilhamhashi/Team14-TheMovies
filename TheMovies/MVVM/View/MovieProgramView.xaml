@@ -157,7 +157,7 @@
                            Foreground="AliceBlue"/>
                         <ComboBox ItemsSource="{Binding MovieProgramsCollectionView, 
                                   UpdateSourceTrigger=PropertyChanged}"
-                                  SelectedItem="{Binding SelectedProgram, Mode=TwoWay, 
+                                  SelectedItem="{Binding SelectedMovie, Mode=TwoWay, 
                                   UpdateSourceTrigger=PropertyChanged}" Margin="5 0 0 0"
                                   Width="160">
                             <ComboBox.ItemTemplate>
@@ -192,14 +192,14 @@
                 <!-- Dropdown til filmtitler -->
                 <Label Content="Vælg Filmtitel: "
                        Foreground="AliceBlue"/>
-                <ComboBox ItemsSource="{Binding MovieProgramCollectionView, 
+                <ComboBox ItemsSource="{Binding MoviesCollectionView, 
                           UpdateSourceTrigger=PropertyChanged}"
-                          SelectedItem="{Binding SelectedProgram, Mode=TwoWay,
+                          SelectedItem="{Binding SelectedMovie, Mode=TwoWay,
                           UpdateSourceTrigger=PropertyChanged}"
                           HorizontalAlignment="Left" Margin="5 0 0 5" Width="160">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Movie.title, Mode=TwoWay}" 
+                            <TextBlock Text="{Binding title}" 
                                        Foreground="AliceBlue"/>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>

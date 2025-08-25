@@ -13,11 +13,11 @@ namespace TheMovies.MVVM.ViewModel
     {
         private readonly MovieProgramFileRepository movieProgramRepository = new MovieProgramFileRepository("movieprograms.csv");
 
-        //public ObservableCollection<Cinema> Cinemas { get; set; }
-
         public ObservableCollection<MovieProgram> MoviePrograms;
         public static ICollectionView MovieProgramCollectionView { get; set; }
         public static ICollectionView PrintCollectionView { get; set; }
+        public ObservableCollection<Movie> Movies { get; set; }
+        public ICollectionView MoviesCollectionView { get; set; }
 
         private Cinema selectedCinemaPrint;
         public Cinema SelectedCinemaPrint
@@ -67,9 +67,6 @@ namespace TheMovies.MVVM.ViewModel
             set { programPremiereDate = value; OnPropertyChanged(); }
         }
 
-        // Liste af film til dropdown
-        public ObservableCollection<Movie> Movies { get; set; }
-
         // Property til valgt film
         private Movie selectedMovie;
         public Movie SelectedMovie
@@ -100,7 +97,17 @@ namespace TheMovies.MVVM.ViewModel
             set { cinemaProgram = value; OnPropertyChanged(); }
         }
 
-
+        private string searchTerm = string.Empty;
+        public string SearchTerm
+        {
+            get { return searchTerm; }
+            set
+            {
+                searchTerm = value;
+                OnPropertyChanged(nameof(MovieProgramsFilter));
+                MovieProgramCollectionView.Refresh();
+            }
+        }
 
         public ICommand OpenPrintWindowCommand { get; }
         public ICommand AddMovieProgramCommand { get; }
@@ -116,17 +123,19 @@ namespace TheMovies.MVVM.ViewModel
         {
             MoviePrograms = new ObservableCollection<MovieProgram>(movieProgramRepository.GetAll());
             MovieProgramCollectionView = CollectionViewSource.GetDefaultView(MoviePrograms);
+            MovieProgramCollectionView.Filter = MovieProgramsFilter;
 
             PrintCollectionView = CollectionViewSource.GetDefaultView(MoviePrograms);
             PrintCollectionView.Filter = PrintFilter;
-
+            
+            // Fyld listen med film (fx fra repository)
+            Movies = new ObservableCollection<Movie>(/* hent film fra repository her */);
+            MoviesCollectionView = CollectionViewSource.GetDefaultView(Movies);
+            
             OpenPrintWindowCommand = new RelayCommand(_ => OpenPrintWindow(), _ => true);
             AddMovieProgramCommand = new RelayCommand(_ => AddMovieProgram(), _ => CanAddMovieProgram());
             UpdateMovieProgramCommand = new RelayCommand(_ => UpdateMovieProgram(), _ => CanUpdateMovieProgram());
-            RemoveMovieprogramCommand = new RelayCommand(_ => RemoveMovieProgram(), _ => CanRemoveMovieprogram());
-
-            // Fyld listen med film (fx fra repository)
-            Movies = new ObservableCollection<Movie>(/* hent film fra repository her */);
+            RemoveMovieprogramCommand = new RelayCommand(_ => RemoveMovieProgram(), _ => CanRemoveMovieprogram());            
         }
         
         private bool PrintFilter(object obj)
@@ -198,6 +207,18 @@ namespace TheMovies.MVVM.ViewModel
             }
 
             SelectedProgram = null;
+        }
+
+        private bool MovieProgramsFilter(object obj)
+        {
+            if (obj is Movie movie)
+            {
+                return movie.title.Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase) ||
+                       movie.director.Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase) ||
+                       movie.genre.Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase);
+                // Skal kunne søge efter biografer, filmtitler, filminstruktører og genre
+            }
+            return false;
         }
     }
 }
