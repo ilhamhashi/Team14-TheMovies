@@ -16,13 +16,13 @@
         <StackPanel>
             <GroupBox Header="Vælg biograf">
             <ComboBox SelectedItem="{Binding SelectedCinemaPrint}"
-                              ItemsSource="{Binding Path=MovieProgramCollectionView, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name" 
+                              ItemsSource="{Binding Path=CinemasCollectionView, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name" 
                               Margin="0,5,0,10" />
         </GroupBox>
 
         <GroupBox Header="Vælg måned">
             <ComboBox SelectedItem="{Binding SelectedMonth}"
-                              ItemsSource="{Binding Path=MovieProgramCollectionView, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="ShowTime" 
+                              ItemsSource="{Binding Path=CinemasCollectionView, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="ShowTime" 
                               Margin="0,5,0,10" />
         </GroupBox>
 

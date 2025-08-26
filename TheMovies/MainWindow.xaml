@@ -16,7 +16,7 @@
 
         <!-- Definerer rækker -->
         <Grid.RowDefinitions>
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="80"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
@@ -29,12 +29,12 @@
         <!-- Overskrift -->
         <Label Content="THE MOVIES"
                Foreground="AliceBlue"
-               FontSize="30"
+               FontSize="25"
                FontWeight="DemiBold"
                Margin="20,20,20,20"/>
         
         <Button Grid.Column="1" 
-                Content="Tilføj" 
+                Content="ÅBN FILMPROGRAM" 
                 Command="{Binding OpenWindowCommand, 
                 UpdateSourceTrigger=PropertyChanged}"
                 Width="150" Height="30"
@@ -65,31 +65,29 @@
                             <StackPanel Margin="5" Orientation="Vertical">
 
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="Filmtitel: "
-                                           FontWeight="Bold" Foreground="AliceBlue"/>
-                                    <TextBlock Text="{Binding Path=title, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
-                                           Foreground="AliceBlue"/>
+                                    <TextBlock Text="{Binding Path=title, UpdateSourceTrigger=PropertyChanged}" 
+                                               Foreground="AliceBlue" FontWeight="Bold"/>
                                 </StackPanel>
                                 
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="Instruktør: "
-                                           FontWeight="DemiBold" FontSize="14" Foreground="AliceBlue"/>
-                                    <TextBlock Text="{Binding Path=director, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
-                                           Foreground="AliceBlue"/>
+                                               FontSize="14" Foreground="AliceBlue"/>
+                                    <TextBlock Text="{Binding Path=director, UpdateSourceTrigger=PropertyChanged}" 
+                                               Foreground="AliceBlue" FontSize="14"/>
                                 </StackPanel>
 
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="Filmgenre: "
-                                           FontWeight="DemiBold" FontSize="14" Foreground="AliceBlue"/>
-                                    <TextBlock Text="{Binding Path=genre, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
-                                           Foreground="AliceBlue" FontSize="14"/>
+                                    <TextBlock Text="Genre: "
+                                               FontSize="14" Foreground="AliceBlue"/>
+                                    <TextBlock Text="{Binding Path=genre, UpdateSourceTrigger=PropertyChanged}" 
+                                               Foreground="AliceBlue" FontSize="14"/>
                                 </StackPanel>
 
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="Filmvarighed: "
-                                           FontWeight="DemiBold" FontSize="14" Foreground="AliceBlue"/>
-                                    <TextBlock Text="{Binding Path=movieLength, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
-                                           Foreground="AliceBlue" FontSize="14" />
+                                    <TextBlock Text="Varighed: "
+                                               FontSize="14" Foreground="AliceBlue"/>
+                                    <TextBlock Text="{Binding Path=movieLength, UpdateSourceTrigger=PropertyChanged}" 
+                                               Foreground="AliceBlue" FontSize="14" />
                                 </StackPanel>
                             </StackPanel>
                         </DataTemplate>
