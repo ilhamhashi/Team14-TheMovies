@@ -11,92 +11,57 @@ namespace TheMovies.MVVM.ViewModel
 {
     internal class MovieProgramViewModel : ViewModelBase
     {
-        private readonly MovieProgramFileRepository movieProgramRepository = new MovieProgramFileRepository("movieprograms.csv");
+        private readonly FileMovieProgramRepository movieProgramRepository = new FileMovieProgramRepository("movieprograms.csv");
+        private readonly FileCinemaRepository cinemaRepository = new FileCinemaRepository("cinemas.csv");
 
         public ObservableCollection<MovieProgram> MoviePrograms;
-        public static ICollectionView MovieProgramCollectionView { get; set; }
-        public static ICollectionView PrintCollectionView { get; set; }
-        public ObservableCollection<Movie> Movies { get; set; }
+        public ObservableCollection<Cinema> Cinemas;
+        public ICollectionView MovieProgramCollectionView { get; set; }
         public ICollectionView MoviesCollectionView { get; set; }
+        public ICollectionView CinemasCollectionView { get; set; }
 
-        private Cinema selectedCinemaPrint;
-        public Cinema SelectedCinemaPrint
+        private TimeSpan duration;
+        public TimeSpan Duration
         {
-            get { return selectedCinemaPrint; }
-            set
-            {
-                selectedCinemaPrint = value;
-                OnPropertyChanged(nameof(PrintFilter));
-                PrintCollectionView.Refresh();
-            }
+            get { return duration; }
+            set { duration = value; OnPropertyChanged(); }
         }
 
-        private DateTime selectedMonth;
-        public DateTime SelectedMonth
+        private DateTime showTime;
+        public DateTime ShowTime
         {
-            get { return selectedMonth; }
-            set
-            {
-                selectedMonth = value;
-                OnPropertyChanged(nameof(PrintFilter));
-                PrintCollectionView.Refresh();
-            }
+            get { return showTime; }
+            set { showTime = value; OnPropertyChanged(); }
         }
 
-        // Property til programvarighed
-        private TimeSpan programDuration;
-        public TimeSpan ProgramDuration
+        private DateTime premiereDate;
+        public DateTime PremiereDate
         {
-            get { return programDuration; }
-            set { programDuration = value; OnPropertyChanged(); }
+            get { return premiereDate; }
+            set { premiereDate = value; OnPropertyChanged(); }
         }
 
-        // Property til forestillingstidspukt
-        private DateTime programShowTime;
-        public DateTime ProgramShowTime
+        private Movie movie;
+        public Movie Movie
         {
-            get { return programShowTime; }
-            set { programShowTime = value; OnPropertyChanged(); }
+            get { return movie; }
+            set { movie = value; OnPropertyChanged(); }
         }
 
-        // Property til premiere dato
-        private DateOnly programPremiereDate;
-        public DateOnly ProgramPremiereDate
+        private Cinema cinema;
+        public Cinema Cinema
         {
-            get { return programPremiereDate; }
-            set { programPremiereDate = value; OnPropertyChanged(); }
+            get { return cinema; }
+            set { cinema = value; OnPropertyChanged(); }
         }
 
-        // Property til valgt film
-        private Movie selectedMovie;
-        public Movie SelectedMovie
+        private MovieProgram selectedMovieProgram;
+        public MovieProgram SelectedMovieProgram
         {
-            get => selectedMovie;
-            set
-            {
-                selectedMovie = value;
-                OnPropertyChanged();
-                // Opdater ProgramDuration når en film vælges
-                ProgramDuration = selectedMovie != null
-                    ? selectedMovie.movieLength.Add(TimeSpan.FromMinutes(30))
-                    : TimeSpan.Zero;
-            }
+            get { return selectedMovieProgram; }
+            set { selectedMovieProgram = value; OnPropertyChanged(); }
         }
-
-        private MovieProgram selectedProgram;
-        public MovieProgram SelectedProgram
-        {
-            get { return selectedProgram; }
-            set { selectedProgram = value; OnPropertyChanged(); }
-        }
-
-        private Cinema cinemaProgram;
-        public Cinema CinemaProgram
-        {
-            get { return cinemaProgram; }
-            set { cinemaProgram = value; OnPropertyChanged(); }
-        }
-
+        
         private string searchTerm = string.Empty;
         public string SearchTerm
         {
@@ -108,44 +73,30 @@ namespace TheMovies.MVVM.ViewModel
                 MovieProgramCollectionView.Refresh();
             }
         }
-
-        public ICommand OpenPrintWindowCommand { get; }
         public ICommand AddMovieProgramCommand { get; }
         public ICommand UpdateMovieProgramCommand { get; }
         public ICommand RemoveMovieprogramCommand { get; }
+        public ICommand OpenPrintWindowCommand { get; }
 
-        // Kom tilbage til dette:
-        private bool CanAddMovieProgram() => SelectedProgram != null && CinemaProgram != null;
-        private bool CanUpdateMovieProgram() => SelectedProgram != null;
-        private bool CanRemoveMovieprogram() => SelectedProgram != null;
+        private bool CanAddMovieProgram() => Cinema != null && Movie != null;
+        private bool CanUpdateMovieProgram() => SelectedMovieProgram != null;
+        private bool CanRemoveMovieprogram() => SelectedMovieProgram != null;
 
         public MovieProgramViewModel()
         {
             MoviePrograms = new ObservableCollection<MovieProgram>(movieProgramRepository.GetAll());
+            Cinemas = new ObservableCollection<Cinema>(cinemaRepository.GetAll());
+
             MovieProgramCollectionView = CollectionViewSource.GetDefaultView(MoviePrograms);
+            CinemasCollectionView = CollectionViewSource.GetDefaultView(Cinemas);
+            MoviesCollectionView = CollectionViewSource.GetDefaultView(MainWindowViewModel.MoviesCollectionView);
             MovieProgramCollectionView.Filter = MovieProgramsFilter;
 
-            PrintCollectionView = CollectionViewSource.GetDefaultView(MoviePrograms);
-            PrintCollectionView.Filter = PrintFilter;
-            
-            // Fyld listen med film (fx fra repository)
-            Movies = new ObservableCollection<Movie>(/* hent film fra repository her */);
-            MoviesCollectionView = CollectionViewSource.GetDefaultView(Movies);
-            
+
             OpenPrintWindowCommand = new RelayCommand(_ => OpenPrintWindow(), _ => true);
             AddMovieProgramCommand = new RelayCommand(_ => AddMovieProgram(), _ => CanAddMovieProgram());
             UpdateMovieProgramCommand = new RelayCommand(_ => UpdateMovieProgram(), _ => CanUpdateMovieProgram());
-            RemoveMovieprogramCommand = new RelayCommand(_ => RemoveMovieProgram(), _ => CanRemoveMovieprogram());            
-        }
-        
-        private bool PrintFilter(object obj)
-        {
-            if (obj is MovieProgram movieProgram)
-            {
-                return movieProgram.Cinema.Name.Equals(SelectedCinemaPrint.ToString(), StringComparison.InvariantCultureIgnoreCase) &&
-                       movieProgram.ShowTime.Month.ToString().Equals(SelectedMonth.Month.ToString(), StringComparison.InvariantCultureIgnoreCase);
-            }
-            return false;
+            RemoveMovieprogramCommand = new RelayCommand(_ => RemoveMovieProgram(), _ => CanRemoveMovieprogram());        
         }
 
         private void OpenPrintWindow()
@@ -157,66 +108,69 @@ namespace TheMovies.MVVM.ViewModel
         private void AddMovieProgram()
         {
             //opret objekt og tilføj til repository og observablecollection
-            MovieProgram movieProgram = new MovieProgram(Guid.NewGuid(), ProgramShowTime, ProgramPremiereDate, SelectedMovie, CinemaProgram);
+            MovieProgram movieProgram = new MovieProgram(Guid.NewGuid(), Duration, ShowTime, PremiereDate, Movie, Cinema);
             movieProgramRepository.AddMovieProgram(movieProgram);
             MoviePrograms.Add(movieProgram);
 
             //vis bekræftelse
-            
-            MessageBox.Show($"{selectedMovie.title} tilføjet!", "Udført", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show($"Program for {Movie.title} i biograf {Cinema.Name}, {Cinema.City} tilføjet!", "Udført", MessageBoxButton.OK, MessageBoxImage.Information);
 
-            //nulstil felter - Spørg Ilham!!!!!
-            ProgramShowTime = DateTime.Now;
-            ProgramPremiereDate = DateOnly.FromDateTime(DateTime.Now);
-            SelectedMovie = null;
-            CinemaProgram = null;
+            //nulstil felter
+            ShowTime = DateTime.Now;
+            PremiereDate = DateTime.Today;
+            Movie = null;
+            Cinema = null;
         }
 
         private void UpdateMovieProgram()
         {
             //opdater movie i repository
-            movieProgramRepository.UpdateMovieProgram(SelectedProgram);
+            movieProgramRepository.UpdateMovieProgram(SelectedMovieProgram);
 
             //vis bekræftelse 
             MessageBox.Show($"Ændringerne er gemt", "Udført", MessageBoxButton.OK, MessageBoxImage.Information);
 
             //nulstil valgt movie
-            SelectedProgram = null;
+            SelectedMovieProgram = null;
 
         }
 
         private void RemoveMovieProgram()
         {
 
-            MessageBoxResult result = MessageBox.Show($"Er du sikker på, at du vil fjerne {SelectedMovie.title}?",
+            MessageBoxResult result = MessageBox.Show($"Er du sikker på, at du vil fjerne program for {SelectedMovieProgram.Movie.title} i biograf {SelectedMovieProgram.Cinema.Name}, {SelectedMovieProgram.Cinema.City}?",
             "Er du enig?", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
             if (result == MessageBoxResult.Yes)
-            {
-                MessageBox.Show($"{SelectedMovie.title} er fjernet fra listen.",
-                                "Udført", MessageBoxButton.OK, MessageBoxImage.Information);
+            {                
+                //fjern movie i repository og observablecollection
+                movieProgramRepository.RemoveMovieProgram(SelectedMovieProgram);
+                MoviePrograms.Remove(SelectedMovieProgram);
 
-                //fjern movie i repository 
-                movieProgramRepository.RemoveMovieProgram(SelectedProgram);
-                MoviePrograms.Remove(SelectedProgram);
+                MessageBox.Show($"Programmet er fjernet fra listen.",
+                                "Udført", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
             {
-                MessageBox.Show($"Filmen blev ikke fjernet fra listen.",
+                MessageBox.Show($"Programmet blev ikke fjernet fra listen.",
                                 "Annulleret", MessageBoxButton.OK, MessageBoxImage.Information);
             }
 
-            SelectedProgram = null;
+            SelectedMovieProgram = null;
         }
 
         private bool MovieProgramsFilter(object obj)
         {
-            if (obj is Movie movie)
+            if (obj is MovieProgram movieProgram)
             {
-                return movie.title.Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase) ||
-                       movie.director.Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase) ||
-                       movie.genre.Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase);
-                // Skal kunne søge efter biografer, filmtitler, filminstruktører og genre
+                return movieProgram.Movie.title.Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase) ||
+                       movieProgram.Movie.director.Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase) ||
+                       movieProgram.Movie.genre.Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase) ||
+                       movieProgram.PremiereDate.ToString().Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase) ||
+                       movieProgram.ShowTime.ToString().Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase) ||
+                       movieProgram.Cinema.Name.Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase) ||
+                       movieProgram.Cinema.City.Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase);
+                // Skal kunne søge efter showtime, premieredato, biografer, filmtitler, filminstruktører og genre.
             }
             return false;
         }

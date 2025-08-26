@@ -1,5 +1,4 @@
-﻿
-using TheMovies.MVVM.Model.Classes;
+﻿using TheMovies.MVVM.Model.Classes;
 
 namespace TheMovies.MVVM.Model.Repositories
 {
