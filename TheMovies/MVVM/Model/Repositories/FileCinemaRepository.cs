@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Windows.Input;
 using TheMovies.MVVM.Model.Classes;
 
 namespace TheMovies.MVVM.Model.Repositories
@@ -12,7 +13,8 @@ namespace TheMovies.MVVM.Model.Repositories
             cinemaFilePath = filePath;
             if (!File.Exists(cinemaFilePath))
             {
-                File.WriteAllText(filePath, "BiografID, Navn, By, Sal-antal\n");
+                File.AppendAllText(filePath, "BiografId, Navn, By, Sal-antal" + Environment.NewLine);
+                File.AppendAllText(cinemaFilePath, String.Join(Environment.NewLine, demoCinemas()) + Environment.NewLine);
             }
 
         }
@@ -34,6 +36,19 @@ namespace TheMovies.MVVM.Model.Repositories
 
 
             }
+        }
+        private List<Cinema> demoCinemas()
+        {
+            List<Cinema> demoCinemas = new List<Cinema>();
+
+            Cinema cinema1 = new Cinema(Guid.NewGuid(), "CinemaxX", "Århus", 1);
+            Cinema cinema2 = new Cinema(Guid.NewGuid(), "CinemaxX", "Odense", 1);
+            Cinema cinema3 = new Cinema(Guid.NewGuid(), "Nordisk Film", "Århus", 1);
+            Cinema cinema4 = new Cinema(Guid.NewGuid(), "Nordisk Film", "Odense", 1);
+
+            demoCinemas.AddRange(cinema1, cinema2, cinema3, cinema4);
+
+            return demoCinemas;
         }
     }
 }

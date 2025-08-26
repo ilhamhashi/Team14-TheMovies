@@ -8,21 +8,23 @@ using TheMovies.MVVM.Model.Classes;
 
 namespace TheMovies.MVVM.Model.Repositories
 {
-    class MovieProgramFileRepository : IMovieProgramRepository
+    class FileMovieProgramRepository : IMovieProgramRepository
     {
         private readonly string movieProgramFilePath;
 
-        public MovieProgramFileRepository(string mpFilePath)
+        public FileMovieProgramRepository(string mpFilePath)
         {
             movieProgramFilePath = mpFilePath;
 
             //Hvis filen ikke eksisterer i forvejen oprettes en ny med kolonnetitler. 
             if (!File.Exists(movieProgramFilePath))
+
             {
                 File.AppendAllText(movieProgramFilePath, "FilmprogramID, Spilletid, Forestillingstid, Premieredato, Film, Biograf" + Environment.NewLine);
+                File.AppendAllText(movieProgramFilePath, String.Join(Environment.NewLine, demoMoviePrograms()) + Environment.NewLine);
             }
         }
-        
+
         public IEnumerable<MovieProgram> GetAll()
         {
             try
@@ -84,5 +86,20 @@ namespace TheMovies.MVVM.Model.Repositories
                 Console.WriteLine($"Fejl ved skrivning til fil: {ex.Message}");
             }
         }
+
+        private List<MovieProgram> demoMoviePrograms()
+        {
+            List<MovieProgram> demoMoviePrograms = new List<MovieProgram>();
+
+            MovieProgram movieProgram1 = new MovieProgram
+                (Guid.NewGuid(), TimeSpan.FromHours(2), DateTime.Now, DateTime.FromOADate(1),
+                new Movie(Guid.NewGuid(), "TestTitel", "TestInstruktør", "TestGenre", TimeSpan.FromHours(1, 30)),
+                new Cinema(Guid.NewGuid(), "TestBiografNavn", "TestBiografBy", 1));
+
+            demoMoviePrograms.Add(movieProgram1);
+
+            return demoMoviePrograms;
+        }
     }
 }
+

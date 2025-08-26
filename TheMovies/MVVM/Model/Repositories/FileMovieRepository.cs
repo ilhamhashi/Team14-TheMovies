@@ -14,7 +14,9 @@ namespace TheMovies.MVVM.Model.Repositories
             //Hvis filen ikke eksisterer i forvejen oprettes en ny med kolonnetitler. 
             if (!File.Exists(movieFilePath))
             {
-                File.AppendAllText(movieFilePath, "FilmID, Filmtitel,Filmgenre,Filmvarighed" + Environment.NewLine);
+                File.AppendAllText(movieFilePath, "FilmId, Filmtitel, Filminstruktør, Filmgenre, Filmvarighed" + Environment.NewLine);
+                File.AppendAllText(movieFilePath, String.Join(Environment.NewLine, demoMovies()) + Environment.NewLine);
+
             }
         }       
 
@@ -70,13 +72,25 @@ namespace TheMovies.MVVM.Model.Repositories
             try
             {
                 List<string> moviesList = movies.Select(m => m.ToString()).ToList();
-                moviesList.Insert(0, "Filmnummer, Filmtitel, Filmgenre, Filmvarighed");
+                moviesList.Insert(0, "FilmId, Filmtitel, Filminstruktør, Filmgenre, Filmvarighed");
                 File.WriteAllLines(movieFilePath, moviesList);
             }
             catch (IOException ex)
             {
                 Console.WriteLine($"Fejl ved skrivning til fil: {ex.Message}");
             }
+        }
+
+        private List<Movie> demoMovies()
+        {
+            List<Movie> demoMovies = new List<Movie>();
+
+            Movie movie1 = new Movie(Guid.NewGuid(), "1917", "Sam Mendes", "Drama Thriller War", TimeSpan.FromHours(1,57));
+            Movie movie2 = new Movie(Guid.NewGuid(), "The Wife", "Björn Runge", "Drama", TimeSpan.FromHours(1,39));
+            Movie movie3 = new Movie(Guid.NewGuid(), "Ayka", "Sergei Dvortsevoy", "Drama", TimeSpan.FromHours(1,40));
+            
+            demoMovies.AddRange(movie1, movie2, movie3);
+            return demoMovies;
         }
     }
 }
