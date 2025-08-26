@@ -9,7 +9,7 @@ using TheMovies.MVVM.View;
 
 namespace TheMovies.MVVM.ViewModel
 {
-    internal class MovieProgramViewModel : ViewModelBase
+    public class MovieProgramViewModel : ViewModelBase
     {
         private readonly FileMovieProgramRepository movieProgramRepository = new FileMovieProgramRepository("movieprograms.csv");
         private readonly FileCinemaRepository cinemaRepository = new FileCinemaRepository("cinemas.csv");

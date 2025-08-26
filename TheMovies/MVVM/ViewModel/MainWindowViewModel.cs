@@ -11,7 +11,7 @@ using TheMovies.MVVM.View;
 
 namespace TheMovies.MVVM.ViewModel
 {
-    internal class MainWindowViewModel : ViewModelBase
+    public class MainWindowViewModel : ViewModelBase
     {
         private readonly FileMovieRepository movieRepository = new FileMovieRepository("movies.csv");
 

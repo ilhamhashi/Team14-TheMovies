@@ -1,6 +1,6 @@
 ﻿namespace TheMovies.MVVM.Model.Classes
 {
-    class Movie
+    public class Movie
     {
         //ændre gerne til private properties (encapsulation)
         public Guid id { get; set; }

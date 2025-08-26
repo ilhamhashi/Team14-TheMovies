@@ -2,7 +2,7 @@
 
 namespace TheMovies.MVVM.Model.Classes
 {
-    internal class MovieProgram
+    public class MovieProgram
     {
         public Guid Id { get; set; }
         public TimeSpan Duration { get; set; }
