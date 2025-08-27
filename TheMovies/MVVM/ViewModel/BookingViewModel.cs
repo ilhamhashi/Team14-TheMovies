@@ -77,6 +77,30 @@ namespace TheMovies.MVVM.ViewModel
             UpdateBookingCommand = new RelayCommand(_ => UpdateBooking(), _ => CanUpdateBooking());
             RemoveBookingCommand = new RelayCommand(_ => RemoveBooking(), _ => CanRemoveBooking());
         }
+
+        private void RemoveBooking()
+        {
+
+            MessageBoxResult result = MessageBox.Show($"Er du sikker på, at du vil fjerne reservation for {SelectedBooking.Customer.Name}?",
+            "Er du enig?", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                //fjern movie i repository og observablecollection
+                bookingRepository.RemoveBooking(SelectedBooking);
+                Bookings.Remove(SelectedBooking);
+
+                MessageBox.Show($"Reservationen er fjernet fra listen.",
+                                "Udført", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show($"Reservationen blev ikke fjernet fra listen.",
+                                "Annulleret", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+
+            SelectedBooking = null;
+        }
     }
 
 }
