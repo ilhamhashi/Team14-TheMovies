@@ -5,19 +5,17 @@
         public Guid Id {  get; set; }
         public string Name { get; set; }
         public string City { get; set; }
-        public int CinemaScreenCount { get; set; }
 
-        public Cinema(Guid id, string name, string city, int cinemaScreenCount)
+        public Cinema(Guid id, string name, string city)
         {
             Id = id;
             Name = name;
             City = city;
-            CinemaScreenCount = cinemaScreenCount;
         }
 
         public override string ToString()
         {
-            return $"{Id},{Name},{City},{CinemaScreenCount}";
+            return $"{Id},{Name},{City}";
         }
 
         public static Cinema FromString(string input)
@@ -27,8 +25,7 @@
             (
                 Guid.Parse(parts[0]),
                 parts[1],
-                parts[2],
-                int.Parse(parts[3])
+                parts[2]
             );
         }
     }

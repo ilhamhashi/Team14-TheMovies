@@ -18,10 +18,10 @@ namespace TheMovies.MVVM.Model.Repositories
             if (!File.Exists(cinemaHallFilePath))
             {
                 File.AppendAllText(filePath, "Id, Navn, AntalSæder" + Environment.NewLine);
-                File.AppendAllText(cinemaHallFilePath, String.Join(Environment.NewLine, demoCinemaHalls() + Environment.NewLine));
+                File.AppendAllText(cinemaHallFilePath, String.Join(Environment.NewLine, demoCinemaHalls()) + Environment.NewLine);
             }
-
         }
+
         public IEnumerable<CinemaHall> GetAll()
         {
             try
@@ -37,8 +37,6 @@ namespace TheMovies.MVVM.Model.Repositories
 
                 Console.WriteLine($"Fejl ved læsning af fil: {ex.Message}");
                 return [];
-
-
             }
         }
 
@@ -46,10 +44,11 @@ namespace TheMovies.MVVM.Model.Repositories
         {
             List<CinemaHall> demoCinemaHalls = new List<CinemaHall>();
 
-            CinemaHall cinemaHall1 = new CinemaHall(Guid.NewGuid(), "Lille sal", 1);
-            CinemaHall cinemaHall2 = new CinemaHall(Guid.NewGuid(), "IMAX", 2);
+            CinemaHall cinemaHall1 = new CinemaHall(Guid.NewGuid(), "Lille sal", 100, FileCinemaRepository.demoCinemas()[0]);
+            CinemaHall cinemaHall2 = new CinemaHall(Guid.NewGuid(), "IMAX", 80, FileCinemaRepository.demoCinemas()[1]);
+            CinemaHall cinemaHall3 = new CinemaHall(Guid.NewGuid(), "Grand Hall", 250, FileCinemaRepository.demoCinemas()[2]);
 
-            demoCinemaHalls.AddRange(cinemaHall1, cinemaHall2);
+            demoCinemaHalls.AddRange(cinemaHall1, cinemaHall2, cinemaHall3);
 
             return demoCinemaHalls;
         }
