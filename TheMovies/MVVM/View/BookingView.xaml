@@ -4,9 +4,70 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TheMovies.MVVM.View"
+        xmlns:ViewModel="clr-namespace:TheMovies.MVVM.ViewModel"
         mc:Ignorable="d"
-        Title="BookingView" Height="450" Width="800">
+        Title="BookingView" Height="800" Width="700"
+        Background="#272537">
+    <!-- shift + ctrl + b = Build uden at køre -->  
+    
+    <Window.DataContext>
+        <ViewModel:BookingViewModel/>
+    </Window.DataContext> 
+
     <Grid>
+        <!-- Definerer rækker -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="250"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <!-- Definerer kolonner -->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="45*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Overskrift -->
+        <Label Content="THE MOVIES"
+               Foreground="AliceBlue"
+               FontSize="30"
+               FontWeight="DemiBold"
+               Margin="20,20,20,20"/>
+
+        <StackPanel Grid.Column="1">
+            <GroupBox Header="Søg" Foreground="AliceBlue" FontSize="16"
+                      BorderThickness="0.8"
+                      Margin="20,20,20,0"
+                      Height="50"
+                      Width="350"
+                      HorizontalAlignment="Right">
+                      
+                <TextBox Text="{Binding SearchTerm, UpdateSourceTrigger=PropertyChanged}"
+                         Background="Transparent"
+                         Foreground="AliceBlue"
+                         BorderThickness="0"
+                         CaretBrush="AliceBlue"/>
+            </GroupBox>
+        </StackPanel>
+
+        <!-- Filmliste -->
+        <GroupBox Grid.Row="1"
+                  Header="Forestillinger"
+                  Foreground="AliceBlue"
+                  FontSize="16"
+                  Margin="10">
+            <!-- Listen kan scrolle, hvis den bliver lang -->
+            <ScrollViewer HorizontalScrollBarVisibility="Auto">
+                <!-- Listbox oversigt over MovieProgramCollection -->
+                <ListBox ItemsSource="{Binding BookingsCollectionView, UpdateSourceTrigger=PropertyChanged}"
+                         SelectedItem="{Binding SelectedBooking, UpdateSourceTrigger=PropertyChanged}"
+                         Background="Transparent"
+                         BorderThickness="0">
+                    
+                </ListBox>
+            </ScrollViewer>
+        </GroupBox>
+        
         
     </Grid>
 </Window>
