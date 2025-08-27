@@ -78,6 +78,7 @@ namespace TheMovies.MVVM.ViewModel
             RemoveBookingCommand = new RelayCommand(_ => RemoveBooking(), _ => CanRemoveBooking());
         }
 
+
         private void AddBooking()
 
         {
@@ -95,6 +96,7 @@ namespace TheMovies.MVVM.ViewModel
             NewCustomer = null;
             MovieScreening = null;
         }
+
 
 
         private void RemoveBooking()
