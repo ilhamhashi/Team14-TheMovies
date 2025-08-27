@@ -8,7 +8,6 @@ using TheMovies.MVVM.Model.Classes;
 using TheMovies.MVVM.Model.Repositories;
 using TheMovies.MVVM.View;
 
-
 namespace TheMovies.MVVM.ViewModel
 {
     public class BookingViewModel : ViewModelBase
@@ -22,31 +21,31 @@ namespace TheMovies.MVVM.ViewModel
         public Guid BookingId
         {
             get { return bookingId; }
-            set { bookingId = value; }
+            set { bookingId = value; OnPropertyChanged(); }
         }
         private int ticketCount;
         public int TicketCount
         {
             get { return ticketCount; }
-            set { ticketCount = value; }
+            set { ticketCount = value; OnPropertyChanged(); }
         }
         private DateTime bookingDate;
         public DateTime BookingDate
         {
             get { return bookingDate; }
-            set { bookingDate = value; }
+            set { bookingDate = value; OnPropertyChanged(); }
         }
         private Customer newCustomer;
         public Customer NewCustomer
         {
             get { return newCustomer; }
-            set { newCustomer = value; }
+            set { newCustomer = value; OnPropertyChanged(); }
         }
         private MovieScreening movieScreening;
         public MovieScreening MovieScreening
         {
             get { return movieScreening; }
-            set { movieScreening = value; }
+            set { movieScreening = value; OnPropertyChanged(); }
 
         }
 
@@ -54,7 +53,18 @@ namespace TheMovies.MVVM.ViewModel
         public Booking SelectedBooking
         {  
             get { return selectedBooking; }
-            set { selectedBooking = value; }
+            set { selectedBooking = value; OnPropertyChanged(); }
+        }
+        private string searchTerm = string.Empty;
+        public string SearchTerm
+        {
+            get { return searchTerm; }
+            set
+            {
+                searchTerm = value;
+                OnPropertyChanged(nameof(BookingsFilter));
+                BookingsCollectionView.Refresh();
+            }
         }
 
         public ICommand AddBookingCommand { get; }
@@ -66,12 +76,11 @@ namespace TheMovies.MVVM.ViewModel
         private bool CanUpdateBooking() => SelectedBooking != null;
         private bool CanRemoveBooking() => SelectedBooking != null;
 
-        public MainWindowViewModel()
+        public BookingViewModel()
         {
             Bookings = new ObservableCollection<Booking>(bookingRepository.GetAll());
             BookingsCollectionView = CollectionViewSource.GetDefaultView(Bookings);
             BookingsCollectionView.Filter = BookingsFilter;
-
     
             AddBookingCommand = new RelayCommand(_ => AddBooking(), _ => CanAddBooking());
             UpdateBookingCommand = new RelayCommand(_ => UpdateBooking(), _ => CanUpdateBooking());
@@ -79,7 +88,6 @@ namespace TheMovies.MVVM.ViewModel
         }
 
         private void AddBooking()
-
         {
             Booking booking = new Booking(Guid.NewGuid(), TicketCount, BookingDate, NewCustomer, MovieScreening);
             bookingRepository.AddBooking(booking);
@@ -95,7 +103,17 @@ namespace TheMovies.MVVM.ViewModel
             NewCustomer = null;
             MovieScreening = null;
         }
+        private void UpdateBooking()
+        {
+            //opdater movie i repository
+            bookingRepository.UpdateBooking(SelectedBooking);
 
+            //vis bekræftelse 
+            MessageBox.Show($"Ændringerne er gemt", "Udført", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            //nulstil valgt movie
+            SelectedBooking = null;
+        }
 
         private void RemoveBooking()
         {
@@ -119,6 +137,18 @@ namespace TheMovies.MVVM.ViewModel
             }
 
             SelectedBooking = null;
+        }
+        private bool BookingsFilter(object obj)
+        {
+            if (obj is Booking booking
+                )
+            {
+                return booking.Customer.Name.Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase) ||
+                       booking.Customer.Email.Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase) ||
+                       booking.Customer.PhoneNumber.ToString().Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase);
+                // Skal kunne søge efter bookinger ud fra kundeinfo som navn, mail og nummer
+            }
+            return false;
         }
     }
 
