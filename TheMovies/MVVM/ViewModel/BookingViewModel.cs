@@ -1,6 +1,82 @@
-﻿namespace TheMovies.MVVM.ViewModel
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Input;
+using TheMovies.MVVM.Model.Classes;
+using TheMovies.MVVM.Model.Repositories;
+using TheMovies.MVVM.View;
+
+
+namespace TheMovies.MVVM.ViewModel
 {
     public class BookingViewModel : ViewModelBase
     {
+        private readonly FileBookingRepository bookingRepository = new FileBookingRepository("bookings.csv");
+
+        public ObservableCollection<Booking> Bookings;
+        public static ICollectionView? BookingsCollectionView { get; set; }
+
+        private Guid bookingId;
+        public Guid BookingId
+        {
+            get { return bookingId; }
+            set { bookingId = value; }
+        }
+        private int ticketCount;
+        public int TicketCount
+        {
+            get { return ticketCount; }
+            set { ticketCount = value; }
+        }
+        private DateTime bookingDate;
+        public DateTime BookingDate
+        {
+            get { return bookingDate; }
+            set { bookingDate = value; }
+        }
+        private Customer newCustomer;
+        public Customer NewCustomer
+        {
+            get { return newCustomer; }
+            set { newCustomer = value; }
+        }
+        private MovieScreening movieScreening;
+        public MovieScreening MovieScreening
+        {
+            get { return movieScreening; }
+            set { movieScreening = value; }
+
+        }
+
+        private Booking selectedBooking;
+        public Booking SelectedBooking
+        {  
+            get { return selectedBooking; }
+            set { selectedBooking = value; }
+        }
+
+        public ICommand AddBookingCommand { get; }
+        public ICommand UpdateBookingCommand { get; }
+        public ICommand RemoveBookingCommand { get; }
+
+        private bool CanAddBooking() => TicketCount != 0 && NewCustomer != null && MovieScreening != null;
+                                     
+        private bool CanUpdateBooking() => SelectedBooking != null;
+        private bool CanRemoveBooking() => SelectedBooking != null;
+
+        public MainWindowViewModel()
+        {
+            Bookings = new ObservableCollection<Booking>(bookingRepository.GetAll());
+            BookingsCollectionView = CollectionViewSource.GetDefaultView(Bookings);
+            BookingsCollectionView.Filter = BookingsFilter;
+
+    
+            AddBookingCommand = new RelayCommand(_ => AddBooking(), _ => CanAddBooking());
+            UpdateBookingCommand = new RelayCommand(_ => UpdateBooking(), _ => CanUpdateBooking());
+            RemoveBookingCommand = new RelayCommand(_ => RemoveBooking(), _ => CanRemoveBooking());
+        }
     }
+
 }
