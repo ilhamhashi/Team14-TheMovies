@@ -14,14 +14,16 @@ namespace TheMovies.MVVM.ViewModel
         private readonly FileMovieProgramRepository movieProgramRepository = new FileMovieProgramRepository("movieprograms.csv");
         private readonly FileMovieScreeningRepository movieScreeningRepository = new FileMovieScreeningRepository("moviescreenings.csv");
         private readonly FileCinemaRepository cinemaRepository = new FileCinemaRepository("cinemas.csv");
+        private readonly FileCinemaHallRepository cinemaHallRepository = new FileCinemaHallRepository("cinemaHalls.csv");
 
         public ObservableCollection<MovieProgram> MoviePrograms;
         public ObservableCollection<MovieScreening> MovieScreenings;
         public ObservableCollection<Cinema> Cinemas;
+        public ObservableCollection<CinemaHall> Halls;
         public ICollectionView MovieProgramsCollectionView { get; set; }
         public ICollectionView MovieScreeningsCollectionView { get; set; }
         public ICollectionView MoviesCollectionView { get; set; }
-        public ICollectionView CinemasCollectionView { get; set; }
+        public ICollectionView HallsCollectionView { get; set; }
 
         private TimeSpan duration;
         public TimeSpan Duration
@@ -49,6 +51,13 @@ namespace TheMovies.MVVM.ViewModel
         {
             get { return movie; }
             set { movie = value; OnPropertyChanged(); }
+        }
+        private CinemaHall hall;
+
+        public CinemaHall Hall
+        {
+            get { return hall; }
+            set { hall = value; }
         }
 
         private Cinema cinema;
@@ -89,7 +98,7 @@ namespace TheMovies.MVVM.ViewModel
         public ICommand RemoveMovieprogramCommand { get; }
         public ICommand OpenPrintWindowCommand { get; }
 
-        private bool CanAddMovieProgram() => Cinema != null && Movie != null;
+        private bool CanAddMovieProgram() => Hall != null && Movie != null;
         private bool CanUpdateMovieProgram() => SelectedMovieProgram != null;
         private bool CanRemoveMovieprogram() => SelectedMovieProgram != null;
 
@@ -98,10 +107,11 @@ namespace TheMovies.MVVM.ViewModel
             MoviePrograms = new ObservableCollection<MovieProgram>(movieProgramRepository.GetAll());
             MovieScreenings = new ObservableCollection<MovieScreening>(movieScreeningRepository.GetAll());
             Cinemas = new ObservableCollection<Cinema>(cinemaRepository.GetAll());
+            Halls = new ObservableCollection<CinemaHall>(cinemaHallRepository.GetAll());
 
             MovieProgramsCollectionView = CollectionViewSource.GetDefaultView(MoviePrograms);
             MovieScreeningsCollectionView = CollectionViewSource.GetDefaultView(MovieScreenings);
-            CinemasCollectionView = CollectionViewSource.GetDefaultView(Cinemas);
+            HallsCollectionView = CollectionViewSource.GetDefaultView(Halls);
             MoviesCollectionView = CollectionViewSource.GetDefaultView(MainWindowViewModel.MoviesCollectionView);
             MovieProgramsCollectionView.Filter = MovieProgramsFilter;
 
@@ -121,18 +131,18 @@ namespace TheMovies.MVVM.ViewModel
         private void AddMovieProgram()
         {
             //opret objekt og tilføj til repository og observablecollection
-            MovieProgram movieProgram = new MovieProgram(Guid.NewGuid(), Duration, PremiereDate, Movie, Cinema);
+            MovieProgram movieProgram = new MovieProgram(Guid.NewGuid(), Duration, PremiereDate, Movie, Hall);
             movieProgramRepository.AddMovieProgram(movieProgram);
             MoviePrograms.Add(movieProgram);
 
             //vis bekræftelse
-            MessageBox.Show($"Program for {Movie.title} i biograf {Cinema.Name}, {Cinema.City} tilføjet!", "Udført", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show($"Program for {Movie.title} i biografsalen {Hall.Name} tilføjet!", "Udført", MessageBoxButton.OK, MessageBoxImage.Information);
 
             //nulstil felter
             MovieScreeningTime = DateTime.Now;
             PremiereDate = DateTime.Today;
             Movie = null;
-            Cinema = null;
+            Hall = null;
         }
         private void AddMovieScreening()
         {
@@ -142,13 +152,13 @@ namespace TheMovies.MVVM.ViewModel
             MovieScreenings.Add(movieScreening);
 
             //vis bekræftelse
-            MessageBox.Show($"Program for {Movie.title} i biograf {Cinema.Name}, {Cinema.City} tilføjet!", "Udført", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show($"Program for {Movie.title} i biografsalen {Hall.Name}, tilføjet!", "Udført", MessageBoxButton.OK, MessageBoxImage.Information);
 
             //nulstil felter
             MovieScreeningTime = DateTime.Now;
             PremiereDate = DateTime.Today;
             Movie = null;
-            Cinema = null;
+            Hall = null;
         }
         private void UpdateMovieProgram()
         {
@@ -166,7 +176,7 @@ namespace TheMovies.MVVM.ViewModel
         private void RemoveMovieProgram()
         {
 
-            MessageBoxResult result = MessageBox.Show($"Er du sikker på, at du vil fjerne program for {SelectedMovieProgram.Movie.title} i biograf {SelectedMovieProgram.Cinema.Name}, {SelectedMovieProgram.Cinema.City}?",
+            MessageBoxResult result = MessageBox.Show($"Er du sikker på, at du vil fjerne program for {SelectedMovieProgram.Movie.title} i biografsalen {SelectedMovieProgram.Hall.Name}?",
             "Er du enig?", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
             if (result == MessageBoxResult.Yes)
@@ -195,8 +205,9 @@ namespace TheMovies.MVVM.ViewModel
                        movieProgram.Movie.director.Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase) ||
                        movieProgram.Movie.genre.Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase) ||
                        movieProgram.PremiereDate.ToString().Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase) ||
-                       movieProgram.Cinema.Name.Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase) ||
-                       movieProgram.Cinema.City.Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase);
+                       movieProgram.Hall.Name.Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase) ||
+                       movieProgram.Hall.Cinema.Name.Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase) ||
+                       movieProgram.Hall.Cinema.City.Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase);
                 // Skal kunne søge efter showtime, premieredato, biografer, filmtitler, filminstruktører og genre.
             }
             return false;
