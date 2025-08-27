@@ -13,7 +13,7 @@ namespace TheMovies.MVVM.ViewModel
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        private readonly FileMovieRepository movieRepository = new FileMovieRepository("movies.csv");
+        public FileMovieRepository movieRepository = new FileMovieRepository("movies.csv");
 
 		public ObservableCollection<Movie> Movies;
         public static ICollectionView MoviesCollectionView { get; set; }

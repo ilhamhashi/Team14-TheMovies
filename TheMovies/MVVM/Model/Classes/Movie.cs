@@ -2,7 +2,6 @@
 {
     public class Movie
     {
-        //ændre gerne til private properties (encapsulation)
         public Guid id { get; set; }
         public string title { get; set; }
         public string director { get; set; }
