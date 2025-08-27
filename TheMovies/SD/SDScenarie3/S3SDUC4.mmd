@@ -1,0 +1,15 @@
+﻿sequenceDiagram
+participant Employee
+participant UI
+participant MovieBookingViewModel
+participant FileCustomerRepository
+participant Customer
+participant FileReservationRepository
+
+Employee ->> UI : Click [Make Reservation]
+UI ->> Employee : Display Reservations
+Employee ->> UI : Enter (searchTerm)
+UI ->> MovieBookingViewModel: SearchReservationCommand
+MovieBookingViewModel ->> Customer: GetCustomerDetails(searchTerm)
+MovieBookingViewModel ->> FileReservationRepository: SearchReservations(searchTerm)
+FileReservationRepository -->> UI: Display Search Results

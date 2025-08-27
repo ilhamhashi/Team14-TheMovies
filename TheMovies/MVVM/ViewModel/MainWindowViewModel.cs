@@ -11,19 +11,12 @@ using TheMovies.MVVM.View;
 
 namespace TheMovies.MVVM.ViewModel
 {
-    internal class MainWindowViewModel : ViewModelBase
+    public class MainWindowViewModel : ViewModelBase
     {
-        private readonly FileMovieRepository movieRepository = new FileMovieRepository("movies.csv");
+        public FileMovieRepository movieRepository = new FileMovieRepository("movies.csv");
 
 		public ObservableCollection<Movie> Movies;
-        public static ICollectionView MoviesCollectionView { get; set; }
-
-        private Guid movieId;
-		public Guid MovieId
-		{
-			get { return movieId; }
-			set { movieId = value; OnPropertyChanged(); }
-		}
+        public static ICollectionView ?MoviesCollectionView { get; set; }
 
 		private string	movieTitle;
 		public string MovieTitle
@@ -33,7 +26,6 @@ namespace TheMovies.MVVM.ViewModel
 		}
 
         private string movieDirector;
-
         public string MovieDirector
         {
             get { return movieDirector; }
@@ -74,27 +66,23 @@ namespace TheMovies.MVVM.ViewModel
         }
 
         public ICommand AddMovieCommand { get; }
-        public ICommand OpenWindowCommand { get; }
         public ICommand UpdateMovieCommand { get; }
         public ICommand RemoveMovieCommand { get; }
+        public ICommand OpenWindowCommand { get; }
+
 
         private bool CanAddMovie() => !string.IsNullOrWhiteSpace(MovieTitle) && !string.IsNullOrWhiteSpace(MovieGenre) &&
-                                      !string.IsNullOrWhiteSpace(MovieDirector) && MovieLength != null;
+                                      !string.IsNullOrWhiteSpace(MovieDirector) && MovieLength != TimeSpan.Zero;
         private bool CanUpdateMovie() => SelectedMovie != null;
         private bool CanRemoveMovie() => SelectedMovie != null;
 
         public MainWindowViewModel()
         {
-            /* Movie movie1 = new Movie(MovieId, "1917", "Drama", TimeSpan.FromHours(2));
-			movieRepository.AddMovie(movie1);
-            Movie movie2 = new Movie(MovieId, "TEST!", "Thriller", TimeSpan.FromHours(1,45));
-			movieRepository.AddMovie(movie2); */
-			
             Movies = new ObservableCollection<Movie>(movieRepository.GetAll());
             MoviesCollectionView = CollectionViewSource.GetDefaultView(Movies);
             MoviesCollectionView.Filter = MoviesFilter;
 
-            OpenWindowCommand = new RelayCommand(_ => OpenWindow(), _ => true);
+            OpenWindowCommand = new RelayCommand(_ => OpenWindow1(), _ => true);
             AddMovieCommand = new RelayCommand(_ => AddMovie(), _ => CanAddMovie());
             UpdateMovieCommand = new RelayCommand(_ => UpdateMovie(), _ => CanUpdateMovie());
             RemoveMovieCommand = new RelayCommand(_ => RemoveMovie(), _ => CanRemoveMovie());
@@ -165,10 +153,11 @@ namespace TheMovies.MVVM.ViewModel
             return false;
         }
 
-        private void OpenWindow()
+        private void OpenWindow1()
         {
-            MovieProgramView movieProgramView = new MovieProgramView();
-            movieProgramView.Show();
+            MovieProgramView view = new MovieProgramView();
+            view.Show();
         }
+
     }
 }

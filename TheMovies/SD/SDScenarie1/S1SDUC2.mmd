@@ -1,0 +1,16 @@
+﻿sequenceDiagram 
+participant Owner
+participant UI
+participant Movie
+participant MainWindowViewModel
+participant FileMovieRepository
+
+Owner ->> UI : Click [Update Movie]
+UI ->> Owner : Display Movies
+Owner ->> UI : Select (movie)
+Owner ->> UI : Enter (title, genre, movielength)
+Owner ->> UI : Click [Update Movie]
+UI ->> MainWindowViewModel: UpdateMovieCommand
+MainWindowViewModel ->> Movie: UpdateMovie(movie, title, genre, movielength)
+MainWindowViewModel ->> FileMovieRepository: UpdateMovie(Movie)
+FileMovieRepository -->> UI: ""Title" updated!"

@@ -1,19 +1,17 @@
 ﻿namespace TheMovies.MVVM.Model.Classes
 {
-    internal class MovieProgram
+    public class MovieProgram
     {
         public Guid Id { get; set; }
         public TimeSpan Duration { get; set; }
-        public DateTime ShowTime { get; set; }
-        public DateOnly PremiereDate { get; set; }
+        public DateTime PremiereDate { get; set; }
         public Movie Movie { get; set; }
         public Cinema Cinema { get; set; }
 
-        public MovieProgram(Guid id, TimeSpan duration, DateTime showTime, DateOnly premiereDate, Movie movie, Cinema cinema)
+        public MovieProgram(Guid id, TimeSpan duration, DateTime premiereDate, Movie movie, Cinema cinema)
         {
             Id = id;
-            Duration = duration;
-            ShowTime = showTime;
+            Duration = movie.movieLength.Add(TimeSpan.FromMinutes(30));
             PremiereDate = premiereDate;
             Movie = movie;
             Cinema = cinema;
@@ -21,11 +19,10 @@
 
         public override string ToString()
         {
-            return $"{Id},{Duration},{ShowTime},{PremiereDate},{Movie},{Cinema}";
+            return $"{Id},{Duration},{PremiereDate},{Movie},{Cinema}";
         }
 
-        // Ændret til en static metode for at kunne kalde den direkte uden en instans
-        public static MovieProgram FromString(string input) 
+        public static MovieProgram FromString(string input)
         {
             string[] parts = input.Split(',');
             return new MovieProgram
@@ -33,9 +30,8 @@
                 Guid.Parse(parts[0]),
                 TimeSpan.Parse(parts[1]),
                 DateTime.Parse(parts[2]),
-                DateOnly.Parse(parts[3]),
-                new Movie (Guid.Parse(parts[4]), parts[5], parts[6], parts[7], TimeSpan.Parse(parts[8])), /* Behøver kun kan kalde på konstruktør */
-                new Cinema (Guid.Parse(parts[9]), parts[10], parts[11], int.Parse(parts[12])) /* Behøver kun kan kalde på konstruktør */
+                new Movie (Guid.Parse(parts[3]), parts[4], parts[5], parts[6], TimeSpan.Parse(parts[7])),
+                new Cinema (Guid.Parse(parts[8]), parts[9], parts[10], int.Parse(parts[11]))
             );
         }
     }

@@ -1,0 +1,14 @@
+﻿sequenceDiagram 
+participant Owner
+participant UI
+participant MovieProgram
+participant MovieProgramViewModel
+participant FileMovieProgramRepository
+
+Owner ->> UI : Click [Open Movie Program]
+Owner ->> UI : Enter (Movie, ShowTime, Cinema, PremiereDate)
+Owner ->> UI : Click [Add Movie Program]
+UI ->> MovieProgramViewModel: AddMovieProgramCommand
+MovieProgramViewModel ->> MovieProgram: AddMovieProgram(movie, showTime, cinema, premiereDate)
+MovieProgramViewModel ->> FileMovieProgramRepository: AddMovieProgram(MovieProgram)
+FileMovieProgramRepository -->> UI: "Movie program added successfully."
