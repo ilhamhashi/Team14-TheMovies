@@ -1,0 +1,17 @@
+﻿sequenceDiagram 
+participant Owner
+participant UI
+participant MovieProgram
+participant MovieProgramViewModel
+participant FileMovieProgramRepository
+
+Owner ->> UI : Click [Open Movie Program]
+UI ->> Owner : Display Movie Programs
+Owner ->> UI : Select (movieProgram)
+UI ->> Owner : Display MovieProgram details
+Owner ->> UI : Enter (Movie, ShowTime, Cinema, PremiereDate)
+Owner ->> UI : Click [Update Movie Program]
+UI ->> MovieProgramViewModel: UpdateMovieProgramCommand
+MovieProgramViewModel ->> MovieProgram: UpdateMovieProgram(movieProgram, movie, showTime, cinema, premiereDate)
+MovieProgramViewModel ->> FileMovieProgramRepository: UpdateMovieProgram(MovieProgram)
+FileMovieProgramRepository -->> UI: "Movie program updated successfully."

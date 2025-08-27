@@ -1,0 +1,21 @@
+﻿sequenceDiagram 
+participant Employee
+participant UI
+participant MovieBookingViewModel
+participant FileCustomerRepository
+participant FileReservationRepository
+participant Reservation
+
+
+Employee ->> UI : Click [Make Reservation]
+UI ->> Employee : Display Reservations
+Employee ->> UI : Select (Reservation)
+Employee ->> UI : Click [Remove Reservation]
+alt - Confirm removal
+	UI ->> MovieBookingViewModel: RemoveReservationCommand
+	MovieBookingViewModel ->> Reservation: GetReservationDetails(ReservationID)
+	MovieBookingViewModel ->> FileReservationRepository: RemoveReservation(Reservation)
+	FileReservationRepository -->> UI: "Reservation updated!"
+else -- Cancel removal
+	UI ->> Employee: "Removal cancelled."
+end
