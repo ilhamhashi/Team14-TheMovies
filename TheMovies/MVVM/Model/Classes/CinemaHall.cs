@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TheMovies.MVVM.Model.Classes
 {
-    class CinemaHall
+    public class CinemaHall
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
