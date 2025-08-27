@@ -20,8 +20,8 @@ namespace TheMovies.Tests
             viewModel.AddMovieCommand.Execute(null);
 
             // Assert: Tester angivne værdier i FileMovieRepository og ObservableCollection Movies fra MainWindowViewModel
-            Assert.AreEqual(4, viewModel.movieRepository.GetAll().ToList().Count);
-            Assert.AreEqual(4, viewModel.Movies.Count);
+            Assert.AreEqual(5, viewModel.movieRepository.GetAll().ToList().Count);
+            Assert.AreEqual(5, viewModel.Movies.Count);
             Assert.AreEqual("MovieTitle", viewModel.movieRepository.GetAll().ToList()[3].title);
             Assert.AreEqual("MovieDirector", viewModel.movieRepository.GetAll().ToList()[3].director);
             Assert.AreEqual("MovieGenre", viewModel.movieRepository.GetAll().ToList()[3].genre);

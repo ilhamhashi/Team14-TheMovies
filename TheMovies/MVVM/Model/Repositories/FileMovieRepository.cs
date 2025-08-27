@@ -81,7 +81,7 @@ namespace TheMovies.MVVM.Model.Repositories
             }
         }
 
-        private List<Movie> demoMovies()
+        public static List<Movie> demoMovies()
         {
             List<Movie> demoMovies = new List<Movie>();
 

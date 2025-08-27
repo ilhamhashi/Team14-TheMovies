@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace TheMovies.MVVM.Model.Classes
+﻿namespace TheMovies.MVVM.Model.Classes
 {
     public class Cinema
     {

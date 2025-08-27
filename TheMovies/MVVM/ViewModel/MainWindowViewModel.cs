@@ -16,7 +16,7 @@ namespace TheMovies.MVVM.ViewModel
         public FileMovieRepository movieRepository = new FileMovieRepository("movies.csv");
 
 		public ObservableCollection<Movie> Movies;
-        public static ICollectionView MoviesCollectionView { get; set; }
+        public static ICollectionView ?MoviesCollectionView { get; set; }
 
 		private string	movieTitle;
 		public string MovieTitle
@@ -72,7 +72,7 @@ namespace TheMovies.MVVM.ViewModel
 
 
         private bool CanAddMovie() => !string.IsNullOrWhiteSpace(MovieTitle) && !string.IsNullOrWhiteSpace(MovieGenre) &&
-                                      !string.IsNullOrWhiteSpace(MovieDirector) && MovieLength != null;
+                                      !string.IsNullOrWhiteSpace(MovieDirector) && MovieLength != TimeSpan.Zero;
         private bool CanUpdateMovie() => SelectedMovie != null;
         private bool CanRemoveMovie() => SelectedMovie != null;
 
