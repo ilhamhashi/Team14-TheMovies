@@ -78,7 +78,25 @@ namespace TheMovies.MVVM.ViewModel
             RemoveBookingCommand = new RelayCommand(_ => RemoveBooking(), _ => CanRemoveBooking());
         }
 
-        
+        private void AddBooking()
+
+        {
+            Booking booking = new Booking(Guid.NewGuid(), TicketCount, BookingDate, NewCustomer, MovieScreening);
+            bookingRepository.AddBooking(booking);
+            Bookings.Add(booking);
+
+            //Vis bekræftelse
+            MessageBox.Show($"Reservationen er tilføjet til listen.",
+                             "Udført", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            //Nulstil felter
+            TicketCount = 0;
+            BookingDate = DateTime.Now;
+            NewCustomer = null;
+            MovieScreening = null;
+        }
+
+
         private void RemoveBooking()
         {
 
