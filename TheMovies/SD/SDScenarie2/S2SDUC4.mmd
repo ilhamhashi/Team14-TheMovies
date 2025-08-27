@@ -1,0 +1,19 @@
+﻿sequenceDiagram 
+participant Owner
+participant UI
+participant MovieProgram
+participant MovieProgramViewModel
+participant FileMovieProgramRepository
+
+Owner ->> UI : Click [Open Movie Program]
+Owner ->> UI : Enter SearchTerm
+UI ->> MovieProgramViewModel: SearchMovieProgramCommand
+MovieProgramViewModel ->> MovieProgram: GetMoviePrgramDetails(searchTerm)
+MovieProgramViewModel ->> FileMovieProgramRepository: SearchMovieProgram(searchTerm)
+alt SearchTerm found
+	FileMovieProgramRepository -->> UI: Display Search Results
+	Owner ->> UI : Select (movieProgram)
+	UI ->> Owner : Display MovieProgram details
+else SearchTerm not found
+	UI ->> Owner : "No movie programs found."
+end

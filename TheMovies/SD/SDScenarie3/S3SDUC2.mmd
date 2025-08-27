@@ -1,0 +1,21 @@
+﻿sequenceDiagram 
+participant Employee
+participant UI
+participant MovieBookingViewModel
+participant FileCustomerRepository
+participant FileReservationRepository
+participant Customer
+participant Reservation
+
+
+Employee ->> UI : Click [Make Reservation]
+UI ->> Employee : Display Reservations
+Employee ->> UI : Select (Reservation)
+Employee ->> UI : Enter changes
+Employee ->> UI : Click [Update Reservation]
+UI ->> MovieBookingViewModel: UpdateReservationCommand
+MovieBookingViewModel ->> Customer: UpdateCustomer(customerName, mail, phone)
+MovieBookingViewModel ->> FileCustomerRepository: UpdateCustomer(Customer)
+MovieBookingViewModel ->> Reservation: UpdateReservation(movieProgram, showTime, tickets, seats, Customer)
+MovieBookingViewModel ->> FileReservationRepository: UpdateReservation(Reservation)
+FileReservationRepository -->> UI: "Reservation updated!"

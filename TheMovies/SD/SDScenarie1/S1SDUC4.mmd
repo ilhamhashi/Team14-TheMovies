@@ -1,0 +1,19 @@
+﻿sequenceDiagram 
+participant Owner
+participant UI
+participant Movie
+participant MainWindowViewModel
+participant FileMovieRepository
+
+Owner ->> UI : Enter SearchTerm
+UI ->> MainWindowViewModel: SearchMovieCommand
+MainWindowViewModel ->> Movie: GetMovieDetails(searchTerm)
+MainWindowViewModel ->> FileMovieRepository: SearchMovie(searchTerm)
+alt SearchTerm found
+	FileMovieRepository -->> UI: Display Search Results
+	Owner ->> UI : Select (movie)
+	UI ->> Owner : Display Movie details
+else SearchTerm not found
+	UI ->> Owner : "No movies found."
+end
+

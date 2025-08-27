@@ -1,0 +1,25 @@
+﻿sequenceDiagram 
+participant Employee
+participant UI
+participant MovieBookingViewModel
+participant FileCustomerRepository
+participant FileReservationRepository
+participant Customer
+participant Reservation
+
+
+Employee ->> UI : Click [Make Reservation]
+UI ->> Employee : Display Movie programs
+Employee ->> UI : Select (movieProgram, showTime, tickets, seats)
+Employee ->> UI : Enter (customerName, mail, phone)
+Employee ->> UI : Click [Add Reservation]
+alt tickets available
+	UI ->> MovieBookingViewModel: AddReservationCommand
+	MovieBookingViewModel ->> Customer: AddCustomer(customerName, mail, phone)
+	MovieBookingViewModel ->> FileCustomerRepository: AddCustomer(Customer)
+	MovieBookingViewModel ->> Reservation: AddReservation(movieProgram, showTime, tickets, seats, Customer)
+	MovieBookingViewModel ->> FileReservationRepository: AddReservation(Reservation)
+	FileReservationRepository -->> UI: "Reservation added!"
+else tickets not available
+	UI ->> Employee: "There are no tickets for the movie program."
+end
