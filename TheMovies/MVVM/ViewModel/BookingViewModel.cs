@@ -86,7 +86,6 @@ namespace TheMovies.MVVM.ViewModel
 
             if (result == MessageBoxResult.Yes)
             {
-                //fjern movie i repository og observablecollection
                 bookingRepository.RemoveBooking(SelectedBooking);
                 Bookings.Remove(SelectedBooking);
 
