@@ -17,9 +17,9 @@ namespace TheMovies.MVVM.View
     /// <summary>
     /// Interaction logic for MovieBookingView.xaml
     /// </summary>
-    public partial class MovieBookingView : Window
+    public partial class BookingView : Window
     {
-        public MovieBookingView()
+        public BookingView()
         {
             InitializeComponent();
         }
