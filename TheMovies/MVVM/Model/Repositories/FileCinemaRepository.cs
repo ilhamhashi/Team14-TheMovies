@@ -37,7 +37,7 @@ namespace TheMovies.MVVM.Model.Repositories
 
             }
         }
-        private List<Cinema> demoCinemas()
+        public static List<Cinema> demoCinemas()
         {
             List<Cinema> demoCinemas = new List<Cinema>();
 

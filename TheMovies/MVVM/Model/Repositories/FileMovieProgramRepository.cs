@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 using TheMovies.MVVM.Model.Classes;
 
 namespace TheMovies.MVVM.Model.Repositories
@@ -42,7 +37,6 @@ namespace TheMovies.MVVM.Model.Repositories
             }
         }
 
-        // Tilføjer et filmprogram til filen. Skal også kunne tilføje 15x2 min på begge sider af spilletiden. 
         public void AddMovieProgram(MovieProgram movieProgram)
         {
             try
@@ -77,9 +71,9 @@ namespace TheMovies.MVVM.Model.Repositories
         {
             try
             {
-                List<string> moviePrgramsList = moviePrograms.Select(mp => mp.ToString()).ToList();
-                moviePrgramsList.Insert(0, "FilmprogramID, Spilletid, Forestillingstid, Premieredato, Film, Biograf");
-                File.WriteAllLines(movieProgramFilePath, moviePrgramsList);
+                List<string> movieProgramList = moviePrograms.Select(mp => mp.ToString()).ToList();
+                movieProgramList.Insert(0, "FilmprogramID, Spilletid, Forestillingstid, Premieredato, Film, Biograf");
+                File.WriteAllLines(movieProgramFilePath, movieProgramList);
             }
             catch (IOException ex)
             {
@@ -87,14 +81,17 @@ namespace TheMovies.MVVM.Model.Repositories
             }
         }
 
-        private List<MovieProgram> demoMoviePrograms()
+        public static List<MovieProgram> demoMoviePrograms()
         {
             List<MovieProgram> demoMoviePrograms = new List<MovieProgram>();
 
-            MovieProgram movieProgram1 = new MovieProgram
-                (Guid.NewGuid(), TimeSpan.FromHours(2), DateTime.Now, DateTime.FromOADate(1),
-                new Movie(Guid.NewGuid(), "TestTitel", "TestInstruktør", "TestGenre", TimeSpan.FromHours(1, 30)),
-                new Cinema(Guid.NewGuid(), "TestBiografNavn", "TestBiografBy", 1));
+            MovieProgram movieProgram1 = new MovieProgram (
+                Guid.NewGuid(), 
+                TimeSpan.FromHours(2), 
+                DateTime.Now, 
+                FileMovieRepository.demoMovies()[0], 
+                FileCinemaRepository.demoCinemas()[0]
+                );
 
             demoMoviePrograms.Add(movieProgram1);
 

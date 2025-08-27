@@ -3,7 +3,7 @@ using TheMovies.MVVM.Model.Classes;
 
 namespace TheMovies.MVVM.Model.Repositories
 {
-    class FileMovieRepository : IMovieRepository
+    public class FileMovieRepository : IMovieRepository
     {
         private readonly string movieFilePath;
 
@@ -81,7 +81,7 @@ namespace TheMovies.MVVM.Model.Repositories
             }
         }
 
-        private List<Movie> demoMovies()
+        public static List<Movie> demoMovies()
         {
             List<Movie> demoMovies = new List<Movie>();
 

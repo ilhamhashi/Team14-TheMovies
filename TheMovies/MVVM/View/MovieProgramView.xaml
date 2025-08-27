@@ -49,10 +49,8 @@
             <!-- Listen kan scrolle, hvis den bliver lang -->
             <ScrollViewer HorizontalScrollBarVisibility="Auto">
                 <!-- Listbox oversigt over MovieProgramCollection -->
-                <ListBox Name="MoviesList" 
-                         ItemsSource="{Binding MovieProgramCollectionView, UpdateSourceTrigger=PropertyChanged}"
+                <ListBox ItemsSource="{Binding MovieProgramsCollectionView, UpdateSourceTrigger=PropertyChanged}"
                          SelectedItem="{Binding SelectedMovieProgram, UpdateSourceTrigger=PropertyChanged}"
-                         HorizontalAlignment="Stretch"
                          Background="Transparent"
                          BorderThickness="0">
 
@@ -61,30 +59,27 @@
                             <StackPanel Margin="5" Orientation="Vertical">
 
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="Biograf: "
-                                           FontWeight="Bold" Foreground="AliceBlue"/>
-                                    <TextBlock Text="{Binding Path=Cinema.Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
-                                           Foreground="AliceBlue"/>
+                                    <TextBlock Text="{Binding Path=Cinema.Name, UpdateSourceTrigger=PropertyChanged}" 
+                                               FontWeight="Bold" Foreground="AliceBlue"/>
+                                    <TextBlock Text=", " FontWeight="DemiBold" Foreground="AliceBlue"/>
+                                    <TextBlock Text="{Binding Path=Cinema.City, UpdateSourceTrigger=PropertyChanged}"
+                                               FontWeight="DemiBold" Foreground="AliceBlue"/>
                                 </StackPanel>
 
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="By: "
+                                    <TextBlock Text="Film: "
                                            FontWeight="DemiBold" FontSize="14" Foreground="AliceBlue"/>
-                                    <TextBlock Text="{Binding Path=Cinema.City, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
-                                           Foreground="AliceBlue"/>
-                                </StackPanel>
-
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text=": "
-                                           FontWeight="DemiBold" FontSize="14" Foreground="AliceBlue"/>
-                                    <TextBlock Text="{Binding Path=Movie.title, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                    <TextBlock Text="{Binding Path=Movie.title, UpdateSourceTrigger=PropertyChanged}" 
+                                           Foreground="AliceBlue" FontSize="14"/>
+                                    <TextBlock Text=", " Foreground="AliceBlue" FontSize="14"/>
+                                    <TextBlock Text="{Binding Path=Movie.director, UpdateSourceTrigger=PropertyChanged}" 
                                            Foreground="AliceBlue" FontSize="14"/>
                                 </StackPanel>
 
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="Filmvarighed: "
+                                    <TextBlock Text="Premiere: "
                                            FontWeight="DemiBold" FontSize="14" Foreground="AliceBlue"/>
-                                    <TextBlock Text="{Binding Path=Movie.director, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                    <TextBlock Text="{Binding Path=PremiereDate, UpdateSourceTrigger=PropertyChanged}" 
                                            Foreground="AliceBlue" FontSize="14" />
                                 </StackPanel>
                             </StackPanel>
@@ -106,6 +101,27 @@
                          Foreground="AliceBlue"
                          BorderThickness="0"
                          CaretBrush="AliceBlue"/>
+                </GroupBox>
+                
+                <!-- Forestillingstider -->
+                <GroupBox Header="Forestillingstider" Foreground="AliceBlue" Margin="20,20,20,0" BorderThickness="0.8">
+                    <StackPanel Orientation="Vertical">
+                        
+                        <Label Content="Indtast Forestillingstidpunkt: " Foreground="AliceBlue"/>
+                        <TextBox Text="{Binding MovieScreeningTime, UpdateSourceTrigger=PropertyChanged}"
+                         Height="30" Margin="5 0 5 0"/>
+                        <ComboBox 
+                                    ItemsSource="{Binding MovieScreeningsCollectionView, UpdateSourceTrigger=PropertyChanged}"
+                                    SelectedItem="{Binding SelectedMovieScreening, UpdateSourceTrigger=PropertyChanged}"
+                                    HorizontalAlignment="Left" Width="150" SelectionChanged="ComboBox_SelectionChanged">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding MovieScreeningDateTime, UpdateSourceTrigger=PropertyChanged}"                                      />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </StackPanel>
+
                 </GroupBox>
 
                 <!-- Tilføj filmprogram -->
@@ -151,20 +167,15 @@
                                     <TextBlock Text="{Binding title, UpdateSourceTrigger=PropertyChanged}"                                      />
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
-
                         </ComboBox>
 
-                        <Label Content="Indtast Forestillingstidpunkt: "
-                       Foreground="AliceBlue"/>
-                        <TextBox Text="{Binding ShowTime, UpdateSourceTrigger=PropertyChanged}"
-                         Height="30" Margin="5 0 5 0"/>
-
+                        <!-- Indtast Premieredato -->
                         <Label Content="Indtast Premieredato: "
                        Foreground="AliceBlue"/>
-
                         <DatePicker Margin="0,0,0,20"
                             SelectedDate="{Binding PremiereDate, UpdateSourceTrigger=PropertyChanged}"/>
 
+                        <!-- Tilføj knap -->
                         <Button Content="Tilføj"
                         Command="{Binding AddMovieProgramCommand, 
                         UpdateSourceTrigger=PropertyChanged}"
@@ -208,7 +219,7 @@
 
                             <Label Content="Forestillingstidpunkt: "
                                    Foreground="AliceBlue"/>
-                            <TextBox Text="{Binding SelectedMovieProgram.ShowTime, UpdateSourceTrigger=PropertyChanged}"
+                            <TextBox Text="{Binding SelectedMovieProgram, UpdateSourceTrigger=PropertyChanged}"
                                      Height="30" Margin="5 0 5 0"/>
 
                             <Label Content="Premieredato: " 
