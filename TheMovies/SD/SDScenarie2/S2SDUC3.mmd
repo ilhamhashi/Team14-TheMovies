@@ -1,0 +1,19 @@
+﻿sequenceDiagram 
+participant Owner
+participant UI
+participant MovieProgram
+participant MovieProgramViewModel
+participant FileMovieProgramRepository
+
+Owner ->> UI : Click [Open Movie Program]
+UI ->> Owner : Display Movie Programs
+Owner ->> UI : Select (movieProgram)
+Owner ->> UI : Click [Remove Movie Program]
+UI ->> MovieProgramViewModel: RemoveMovieProgramCommand
+alt - Confirm Removal
+	MovieProgramViewModel ->> MovieProgram: GetMovieProgramDetails(movieProgramId)
+	MovieProgramViewModel ->> FileMovieProgramRepository: RemoveMovieProgram(MovieProgram)
+	FileMovieProgramRepository -->> UI: "Movie program removed."
+else - Cancel Removal
+	UI ->> Owner : "Removal cancelled."
+end

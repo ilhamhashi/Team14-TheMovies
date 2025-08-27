@@ -1,0 +1,19 @@
+﻿sequenceDiagram 
+participant Owner
+participant UI
+participant Movie
+participant MainWindowViewModel
+participant FileMovieRepository
+
+Owner ->> UI : Click [Remove Movie]
+UI ->> Owner : Display Movies
+Owner ->> UI : Select (movie)
+Owner ->> UI : Click [Remove Movie]
+alt - Confirm removal
+	UI ->> MainWindowViewModel: RemoveMovieCommand
+	MainWindowViewModel ->> Movie: GetMovieDetails(MovieId)
+	MainWindowViewModel ->> FileMovieRepository: RemoveMovie(Movie)
+	FileMovieRepository -->> UI: ""Title" removed!"
+else -- Cancel removal
+	UI ->> Owner: "Removal cancelled."
+end

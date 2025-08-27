@@ -1,0 +1,17 @@
+﻿sequenceDiagram 
+participant Owner
+participant UI
+participant MovieProgram
+participant MovieProgramViewModel
+participant FileMovieProgramRepository
+
+Owner ->> UI : Click [Open Movie Program]
+Owner ->> UI : Click [Print Movie Program]
+UI ->> MovieProgramViewModel : OpenMovieProgramCommand.Execute()
+MovieProgramViewModel ->> UI : Show PrintFileDialog
+Owner ->> UI : Click [Print]
+UI ->> MovieProgramViewModel : PrintMovieProgramCommand.Execute()
+MovieProgramViewModel ->> FileMovieProgramRepository : Load(filePath)
+
+
+
