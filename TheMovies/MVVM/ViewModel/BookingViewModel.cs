@@ -100,6 +100,19 @@ namespace TheMovies.MVVM.ViewModel
             }
 
             SelectedBooking = null;
+
+        }
+        private void UpdateBooking()
+        {
+            //opdater movie i repository
+            bookingRepository.UpdateBooking(SelectedBooking);
+
+            //vis bekræftelse 
+            MessageBox.Show($"Ændringerne er gemt", "Udført", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            //nulstil valgt movie
+            SelectedBooking = null;
+
         }
     }
 
