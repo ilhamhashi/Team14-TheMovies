@@ -416,3 +416,9 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+/TheMovies/MVVM/View/MovieProgramView.xaml
+/TheMovies/MVVM/View/MovieProgramView.xaml.cs
+/TheMovies/MVVM/View/PrintView.xaml
+/TheMovies/MVVM/View/PrintView.xaml.cs
+/TheMovies/MVVM/ViewModel/MainWindowViewModel.cs
+/TheMovies/MVVM/ViewModel/MovieProgramViewModel.cs
