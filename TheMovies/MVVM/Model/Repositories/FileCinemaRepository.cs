@@ -41,10 +41,10 @@ namespace TheMovies.MVVM.Model.Repositories
         {
             List<Cinema> demoCinemas = new List<Cinema>();
 
-            Cinema cinema1 = new Cinema(Guid.NewGuid(), "CinemaxX", "Århus", 1);
-            Cinema cinema2 = new Cinema(Guid.NewGuid(), "CinemaxX", "Odense", 1);
-            Cinema cinema3 = new Cinema(Guid.NewGuid(), "Nordisk Film", "Århus", 1);
-            Cinema cinema4 = new Cinema(Guid.NewGuid(), "Nordisk Film", "Odense", 1);
+            Cinema cinema1 = new Cinema(Guid.NewGuid(), "CinemaxX", "Århus");
+            Cinema cinema2 = new Cinema(Guid.NewGuid(), "CinemaxX", "Odense");
+            Cinema cinema3 = new Cinema(Guid.NewGuid(), "Nordisk Film", "Århus");
+            Cinema cinema4 = new Cinema(Guid.NewGuid(), "Nordisk Film", "Odense");
 
             demoCinemas.AddRange(cinema1, cinema2, cinema3, cinema4);
 

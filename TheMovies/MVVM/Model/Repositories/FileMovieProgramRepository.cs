@@ -90,7 +90,7 @@ namespace TheMovies.MVVM.Model.Repositories
                 TimeSpan.FromHours(2), 
                 DateTime.Now, 
                 FileMovieRepository.demoMovies()[0], 
-                FileCinemaRepository.demoCinemas()[0]
+                FileCinemaHallRepository.demoCinemaHalls()[2]
                 );
 
             demoMoviePrograms.Add(movieProgram1);
