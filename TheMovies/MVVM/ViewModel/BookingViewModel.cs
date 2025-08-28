@@ -1,12 +1,10 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using TheMovies.MVVM.Model.Classes;
 using TheMovies.MVVM.Model.Repositories;
-using TheMovies.MVVM.View;
 
 namespace TheMovies.MVVM.ViewModel
 {

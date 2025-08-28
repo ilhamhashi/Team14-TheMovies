@@ -89,8 +89,7 @@ namespace TheMovies.MVVM.Model.Repositories
                 Guid.NewGuid(), 
                 TimeSpan.FromHours(2), 
                 DateTime.Now, 
-                FileMovieRepository.demoMovies()[0], 
-                FileCinemaHallRepository.demoCinemaHalls()[2]
+                FileMovieRepository.demoMovies()[0]
                 );
 
             demoMoviePrograms.Add(movieProgram1);

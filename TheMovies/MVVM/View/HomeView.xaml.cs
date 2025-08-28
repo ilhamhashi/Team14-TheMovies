@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace TheMovies.MVVM.View
 {
     /// <summary>
-    /// Interaction logic for BookingView.xaml
+    /// Interaction logic for HomeView.xaml
     /// </summary>
-    public partial class BookingView : UserControl
+    public partial class HomeView : UserControl
     {
-        public BookingView()
+        public HomeView()
         {
             InitializeComponent();
         }
