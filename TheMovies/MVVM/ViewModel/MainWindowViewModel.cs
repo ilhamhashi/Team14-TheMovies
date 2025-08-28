@@ -15,7 +15,30 @@ namespace TheMovies.MVVM.ViewModel
     {
         private readonly FileMovieRepository movieRepository = new FileMovieRepository("movies.csv");
 
-		public ObservableCollection<Movie> Movies;
+        // Binder til det view, som skal vises i indholdssektionen
+        private object _currentView;
+        public object CurrentView
+        {
+            get { return _currentView; }
+            set { _currentView = value; OnPropertyChanged(); }
+        }
+
+        // Command der binder til knapperne i menuen
+        public RelayCommand HomeViewCommand { get; set; }
+        public RelayCommand MovieViewCommand { get; set; }
+        public RelayCommand MovieProgramViewCommand { get; set; }
+        public RelayCommand BookingViewCommand { get; set; }
+        public RelayCommand CloseMainWindowCommand { get; set; }
+
+        // Definerer de forskellige viewmodels, der kan vises i indholdssektionen
+        public HomeViewModel HomeVM { get; set; }
+        public MovieViewModel MovieVM { get; set; }
+        public MovieProgramViewModel MovieProgramVM { get; set; }
+        public BookingViewModel BookingVM { get; set; }
+
+
+
+        public ObservableCollection<Movie> Movies;
         public static ICollectionView ?MoviesCollectionView { get; set; }
 
 		private string	movieTitle;
@@ -78,6 +101,38 @@ namespace TheMovies.MVVM.ViewModel
 
         public MainWindowViewModel()
         {
+            HomeVM = new HomeViewModel();
+            MovieVM = new MovieViewModel();
+            MovieProgramVM = new MovieProgramViewModel();
+            BookingVM = new BookingViewModel();
+
+            CurrentView = HomeVM;
+
+            HomeViewCommand = new RelayCommand(o =>
+            {
+                CurrentView = HomeVM;
+            });
+
+            MovieViewCommand = new RelayCommand(o =>
+            {
+                CurrentView = MovieVM;
+            });
+
+            MovieProgramViewCommand = new RelayCommand(o =>
+            {
+                CurrentView = MovieProgramVM;
+            });
+
+            BookingViewCommand = new RelayCommand(o =>
+            {
+                CurrentView = BookingVM;
+            });
+
+            CloseMainWindowCommand = new RelayCommand(o =>
+            {
+                Application.Current.Shutdown();
+            });
+
             Movies = new ObservableCollection<Movie>(movieRepository.GetAll());
             MoviesCollectionView = CollectionViewSource.GetDefaultView(Movies);
             MoviesCollectionView.Filter = MoviesFilter;

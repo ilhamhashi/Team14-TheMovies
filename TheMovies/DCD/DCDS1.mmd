@@ -1,12 +1,97 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿    classDiagram
 
-namespace TheMovies.DCD
-{
-    class DCDS1
-    {
+
+
+    Note --> User : Client
+    Note --> Skill : Skill
+    Skill --> Module : Module
+    Match --> Skill : Skill
+    Match --> Emotion : Emotion
+    Match --> Level : Level
+   
+    class Note {
+        +int Number
+        +string Content
+        +DateTime DateTime
+        +User Client
+        +Skill Skill
+        +string ToString()
+        +static Note FromString(string input)
+        +IEnumerable~Note~ GetAll()
+        +Note GetNote(int number)
+        +void Add(Note note)
+        +void Update(Note note)
+        +void Delete(Note note)
+        -void RewriteFile(List~Note~ notes)
     }
-}
+
+    class User {
+        +string Name
+        +string Email
+        +string Password
+        +bool IsAdmin
+        +string ToString()
+        +static User FromString(string input)
+        +IEnumerable~User~ GetAll()
+        +User GetUser(string email)
+        +void AddUser(User user)
+        +void UpdateUser(User user)
+        +void DeleteUser(User user)
+        +bool ValidateUserLogin(string email, string password)
+        -void RewriteFile(List~User~ users)
+    }
+
+    class Module {
+        +int Number
+        +string Name
+        +string Description
+        +string ToString()
+        +static Module FromString(string input)
+        +IEnumerable~Module~ GetAll()
+        +Module GetModule(int number)
+        +void AddModule(Module module)
+        +void UpdateModule(Module module)
+        +void DeleteModule(Module module)
+        -void RewriteFile(List~Module~ modules)
+    }
+
+    class Skill {
+        +int Number
+        +string Name
+        +string Purpose
+        +string Description
+        +Module Module
+        +string ToString()
+        +static Skill FromString(string input)
+        +IEnumerable~Skill~ GetAll()
+        +Skill GetSkill(int number)
+        +void AddSkill(Skill skill)
+        +void UpdateSkill(Skill skill)
+        +void DeleteSkill(Skill skill)
+        -void RewriteFile(List~Skill~ skills)
+    }
+
+        class Match {
+        +int Number
+        +Skill Skill
+        +string Emotion
+        +string Level
+        +string ToString()
+        +static Match FromString(string input)
+        +IEnumerable~Match~ GetAll()
+        +Module GetMatch(int number)
+        +void AddMatch(Match match)
+        +void UpdateMatch(Match match)
+        +void DeleteMatch(Match match)
+        -void RewriteFile(List~Match~ matches)
+    }
+
+        class Emotion {
+        <<List>>
+        +List~string~ Emotions                
+    }
+
+        class Level {
+        <<List>>
+        +List~string~ Levels                
+    }
