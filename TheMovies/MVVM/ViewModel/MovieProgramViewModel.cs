@@ -45,7 +45,12 @@ namespace TheMovies.MVVM.ViewModel
             get { return premiereDate; }
             set { premiereDate = value; OnPropertyChanged(); }
         }
-
+        private int availableTickets;
+        public int AvailableTickets
+        {
+            get { return availableTickets; }
+            set { availableTickets = value; OnPropertyChanged(); } 
+        }
         private Movie movie;
         public Movie Movie
         {
@@ -97,6 +102,7 @@ namespace TheMovies.MVVM.ViewModel
         public ICommand UpdateMovieProgramCommand { get; }
         public ICommand RemoveMovieprogramCommand { get; }
         public ICommand OpenPrintWindowCommand { get; }
+        public ICommand OpenBookingWindowCommand { get; }
 
         private bool CanAddMovieProgram() => Hall != null && Movie != null;
         private bool CanUpdateMovieProgram() => SelectedMovieProgram != null;
@@ -117,6 +123,7 @@ namespace TheMovies.MVVM.ViewModel
 
 
             OpenPrintWindowCommand = new RelayCommand(_ => OpenPrintWindow(), _ => true);
+            OpenBookingWindowCommand = new RelayCommand(_ => OpenWindow2(), _ => true);
             AddMovieProgramCommand = new RelayCommand(_ => AddMovieProgram(), _ => CanAddMovieProgram());
             UpdateMovieProgramCommand = new RelayCommand(_ => UpdateMovieProgram(), _ => CanUpdateMovieProgram());
             RemoveMovieprogramCommand = new RelayCommand(_ => RemoveMovieProgram(), _ => CanRemoveMovieprogram());        
@@ -126,6 +133,12 @@ namespace TheMovies.MVVM.ViewModel
         {
             PrintView printView = new PrintView();
             printView.Show();
+        }
+
+        private void OpenWindow2()
+        {
+            BookingView view = new BookingView();
+            view.Show();
         }
 
         private void AddMovieProgram()
@@ -147,7 +160,7 @@ namespace TheMovies.MVVM.ViewModel
         private void AddMovieScreening()
         {
             //opret objekt og tilføj til repository og observablecollection
-            MovieScreening movieScreening = new MovieScreening(Guid.NewGuid(), MovieScreeningTime, SelectedMovieProgram.Id);
+            MovieScreening movieScreening = new MovieScreening(Guid.NewGuid(), MovieScreeningTime, SelectedMovieProgram.Id, AvailableTickets);
             movieScreeningRepository.AddMovieScreening(movieScreening);
             MovieScreenings.Add(movieScreening);
 
