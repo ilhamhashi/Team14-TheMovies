@@ -40,6 +40,14 @@
                 Command="{Binding OpenPrintWindowCommand}"
                 Width="150" Height="30" />
 
+        <Button Grid.Column="1" 
+                Content="Booking"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Margin="50 15 20 0"
+                Command="{Binding OpenBookingWindowCommand}"
+                Width="150" Height="30" />
+
         <!-- Filmliste -->
         <GroupBox Grid.Row="1"
                   Header="Filmprogrammer"
@@ -116,7 +124,8 @@
                         <ComboBox 
                                     ItemsSource="{Binding MovieScreeningsCollectionView, UpdateSourceTrigger=PropertyChanged}"
                                     SelectedItem="{Binding SelectedMovieScreening, UpdateSourceTrigger=PropertyChanged}"
-                                    HorizontalAlignment="Left" Width="150" SelectionChanged="ComboBox_SelectionChanged">
+                                    HorizontalAlignment="Left" Width="150" SelectionChanged="ComboBox_SelectionChanged"
+                                    Margin="5 10">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding MovieScreeningDateTime, UpdateSourceTrigger=PropertyChanged}"                                      />
