@@ -16,8 +16,9 @@ namespace TheMovies.MVVM.ViewModel
 
         public ObservableCollection<Booking> Bookings;
         public static ICollectionView? BookingsCollectionView { get; set; }
-        public ICollectionView MovieProgramsCollectionView { get; set; }
-        public ICollectionView MovieScreeningsCollectionView { get; set; }
+        public ICollectionView? MovieProgramsCollectionView { get; set; }
+        public ICollectionView? MovieScreeningsCollectionView { get; set; }
+
 
         private Guid bookingId;
         public Guid BookingId
@@ -35,16 +36,7 @@ namespace TheMovies.MVVM.ViewModel
         public int AvailableTickets
         {
             get { return availableTickets; }
-            /* Tjekker om den nye værdi (value), har den samme værdi som availableTickets.
-               Hvis ikke, så sæt availableTickets til den nye værdi */
-            set
-            {
-                if (availableTickets != value) 
-                {
-                    availableTickets = value;
-                    OnPropertyChanged(nameof(AvailableTickets));
-                }
-            }
+            set { availableTickets = value; OnPropertyChanged(); }
         }
         private DateTime bookingDate;
         public DateTime BookingDate
@@ -112,6 +104,9 @@ namespace TheMovies.MVVM.ViewModel
             BookingsCollectionView = CollectionViewSource.GetDefaultView(Bookings);
             BookingsCollectionView.Filter = BookingsFilter;
 
+            MovieProgramsCollectionView = CollectionViewSource.GetDefaultView(MovieProgramViewModel.MovieProgramsCollectionView);
+            MovieScreeningsCollectionView = CollectionViewSource.GetDefaultView(MovieProgramViewModel.MovieScreeningsCollectionView);
+
             AddBookingCommand = new RelayCommand(_ => AddBooking(), _ => CanAddBooking());
             UpdateBookingCommand = new RelayCommand(_ => UpdateBooking(), _ => CanUpdateBooking());
             RemoveBookingCommand = new RelayCommand(_ => RemoveBooking(), _ => CanRemoveBooking());
@@ -119,9 +114,9 @@ namespace TheMovies.MVVM.ViewModel
 
         private void AddBooking()
         {
-            if (AvailableTickets >= TicketCount)
+            if (SelectedMovieScreening.AvailableTickets >= TicketCount)
             {
-                AvailableTickets -= TicketCount;
+                SelectedMovieScreening.AvailableTickets -= TicketCount;
                 Booking booking = new Booking(Guid.NewGuid(), TicketCount, BookingDate, NewCustomer, SelectedMovieScreening);
                 bookingRepository.AddBooking(booking);
                 Bookings.Add(booking);
@@ -133,7 +128,7 @@ namespace TheMovies.MVVM.ViewModel
             else 
             { 
                 MessageBox.Show($"Der er ikke nok ledige billetter til denne forestilling." +
-                $"\nAntal ledige billetter: {AvailableTickets}", "Booking kunne ikke gennemføres",
+                $"\nAntal ledige billetter: {SelectedMovieScreening.AvailableTickets}", "Booking kunne ikke gennemføres",
                 MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 return;
             }
