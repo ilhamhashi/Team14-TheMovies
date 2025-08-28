@@ -124,7 +124,7 @@
                         <ComboBox 
                                 ItemsSource="{Binding MovieScreeningsCollectionView, UpdateSourceTrigger=PropertyChanged}"
                                 SelectedItem="{Binding SelectedMovieScreening, UpdateSourceTrigger=PropertyChanged}"
-                                HorizontalAlignment="Left" Width="150" SelectionChanged="ComboBox_SelectionChanged"
+                                HorizontalAlignment="Left" Width="150"
                                 Margin="5 10">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
@@ -213,7 +213,7 @@
                                     <Label Content="Vælg Biograf: " 
                                        Foreground="AliceBlue"/>
                                     <ComboBox ItemsSource="{Binding CinemasCollectionView, UpdateSourceTrigger=PropertyChanged}"
-                                          SelectedValue="{Binding SelectedMovieProgram.Hall.Name, UpdateSourceTrigger=PropertyChanged}"
+                                          SelectedValue="{Binding SelectedMovieProgram.Movie.title, UpdateSourceTrigger=PropertyChanged}"
                                           SelectedValuePath="Name"
                                           DisplayMemberPath="Name" 
                                           Margin="0,5,0,10" />

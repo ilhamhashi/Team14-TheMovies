@@ -9,7 +9,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
 
     <UserControl.DataContext>
-        <viewModel:MovieViewModel />
+        <viewModel:MovieViewModel/>
     </UserControl.DataContext>
 
     <Grid>

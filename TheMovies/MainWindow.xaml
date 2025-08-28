@@ -79,6 +79,8 @@
                          Style="{StaticResource MenuButtonTheme}"
                          Command="{Binding BookingViewCommand}"/>
             </StackPanel>
+            
+            <!--  -->
 
             <ContentControl Grid.Row="1"
                         Grid.Column="1"

@@ -9,7 +9,7 @@ namespace TheMovies.Tests
         public void AddMovieCommand_ShouldAddMovieToRepositoryAndList()
         {
             // Arrange: Opretter en instans af MainWindowViewModel og tildeler properties værdier
-            var viewModel = new MainWindowViewModel();
+            var viewModel = new MovieViewModel();
             viewModel.MovieTitle = "MovieTitle";
             viewModel.MovieDirector = "MovieDirector";
             viewModel.MovieGenre = "MovieGenre";

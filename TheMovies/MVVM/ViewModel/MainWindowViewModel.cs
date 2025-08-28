@@ -12,8 +12,6 @@ namespace TheMovies.MVVM.ViewModel
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        public FileMovieRepository movieRepository = new FileMovieRepository("movies.csv"); // private readonly
-
         // Binder til det view, som skal vises i indholdssektionen
         private object currentView;
         public object CurrentView

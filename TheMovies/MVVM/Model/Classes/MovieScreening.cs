@@ -13,7 +13,7 @@
             Id = id;
             MovieScreeningDateTime = movieScreeningDateTime;
             MovieProgramId = movieProgramId;
-            AvailableTickets = Hall.SeatCount;
+            AvailableTickets = availableTickets;
             Hall = hall;
         }
 
