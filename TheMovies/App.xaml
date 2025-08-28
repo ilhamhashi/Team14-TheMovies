@@ -11,6 +11,10 @@
                 <ResourceDictionary Source="Theme/MenuButtonTheme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
+            <DataTemplate DataType="{x:Type viewmodel:MovieViewModel}">
+                <view:MovieView/>
+            </DataTemplate>
+            
             <DataTemplate DataType="{x:Type viewmodel:HomeViewModel}">
                 <view:HomeView/>
             </DataTemplate>
