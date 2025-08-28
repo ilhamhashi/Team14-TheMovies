@@ -122,7 +122,7 @@
                 <StackPanel Margin="20 20 0 0" Orientation="Horizontal">
                     <Label Content="Ændre ønskede billetantal: "
            Foreground="AliceBlue" FontSize="16"/>
-                    <TextBox Text="{Binding TicketCount,
+                    <TextBox Text="{Binding SelectedBooking.TicketCount,
                    UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                    Background="AliceBlue"
                    Width="50" HorizontalAlignment="Left"
@@ -262,21 +262,21 @@
                   Margin="5 15">
                         <StackPanel Margin="0 10 0 -10">
                             <Label Content="Navn:" Foreground="AliceBlue"/>
-                            <TextBox Text="{Binding NewCustomer.Name,
+                            <TextBox Text="{Binding SelectedBooking.Customer.Name,
                            UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                            Foreground="AliceBlue"
                            Background="AliceBlue"
                            Margin="10 0 10 0"/>
 
                             <Label Content="Email:" Foreground="AliceBlue"/>
-                            <TextBox Text="{Binding NewCustomer.Email,
+                            <TextBox Text="{Binding SelectedBooking.Customer.Email,
                            UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                            Foreground="AliceBlue"
                            Background="AliceBlue"
                            Margin="10 0 10 0"/>
 
                             <Label Content="Telefonnr.:" Foreground="AliceBlue"/>
-                            <TextBox Text="{Binding NewCustomer.PhoneNumber,
+                            <TextBox Text="{Binding SelectedBooking.Customer.PhoneNumber,
                            UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                            Foreground="AliceBlue"
                            Background="AliceBlue"

@@ -20,8 +20,8 @@ namespace TheMovies.MVVM.ViewModel
         public ObservableCollection<MovieScreening> MovieScreenings;
         public ObservableCollection<Cinema> Cinemas;
         public ObservableCollection<CinemaHall> Halls;
-        public ICollectionView MovieProgramsCollectionView { get; set; }
-        public ICollectionView MovieScreeningsCollectionView { get; set; }
+        public static ICollectionView MovieProgramsCollectionView { get; set; }
+        public static ICollectionView MovieScreeningsCollectionView { get; set; }
         public ICollectionView MoviesCollectionView { get; set; }
         public ICollectionView HallsCollectionView { get; set; }
 
