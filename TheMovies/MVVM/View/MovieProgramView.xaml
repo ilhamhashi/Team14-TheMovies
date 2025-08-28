@@ -6,47 +6,18 @@
              xmlns:local="clr-namespace:TheMovies.MVVM.View"
              xmlns:viewModel="clr-namespace:TheMovies.MVVM.ViewModel"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="1000" d:DesignWidth="1000">
     
     <UserControl.DataContext>
         <viewModel:MovieProgramViewModel/>
     </UserControl.DataContext>
-    
-    <Grid>
-        <!-- Definerer rækker -->
-        <Grid.RowDefinitions>
-            <RowDefinition Height="100"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
 
+    <Grid>
         <!-- Definerer kolonner -->
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="45*"/>
             <ColumnDefinition Width="55*"/>
         </Grid.ColumnDefinitions>
-
-        <!-- Overskrift -->
-        <Label Content="THE MOVIES"
-           Foreground="AliceBlue"
-           FontSize="30"
-           FontWeight="DemiBold"
-           Margin="20,20,20,20"/>
-
-        <Button Grid.Column="1" 
-            Content="Print"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            Margin="0 15 20 0"
-            Command="{Binding OpenPrintWindowCommand}"
-            Width="150" Height="30" />
-
-        <Button Grid.Column="1" 
-            Content="Booking"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Margin="50 15 20 0"
-            Command="{Binding OpenBookingWindowCommand}"
-            Width="150" Height="30" />
 
         <!-- Filmliste -->
         <GroupBox Grid.Row="1"
@@ -114,43 +85,20 @@
                      CaretBrush="AliceBlue"/>
                 </GroupBox>
 
-                <!-- Forestillingstider -->
-                <GroupBox Header="Forestillingstider" Foreground="AliceBlue" Margin="20,20,20,0" BorderThickness="0.8">
-                    <StackPanel Orientation="Vertical">
-
-                        <Label Content="Indtast Forestillingstidpunkt: " Foreground="AliceBlue"/>
-                        <TextBox Text="{Binding MovieScreeningTime, UpdateSourceTrigger=PropertyChanged}"
-                     Height="30" Margin="5 0 5 0"/>
-                        <ComboBox 
-                                ItemsSource="{Binding MovieScreeningsCollectionView, UpdateSourceTrigger=PropertyChanged}"
-                                SelectedItem="{Binding SelectedMovieScreening, UpdateSourceTrigger=PropertyChanged}"
-                                HorizontalAlignment="Left" Width="150"
-                                Margin="5 10">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding MovieScreeningDateTime, UpdateSourceTrigger=PropertyChanged}"                                      />
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
-                    </StackPanel>
-
-                </GroupBox>
-
                 <!-- Tilføj filmprogram -->
                 <GroupBox Grid.Row="1" Grid.Column="1"
-             Header="Tilføj Filmprogram" Foreground="AliceBlue" FontSize="16"
-             Height="340" VerticalAlignment="Top" Margin="20,10,20,0">
-
+                             Header="Tilføj Filmprogram" Foreground="AliceBlue" FontSize="16"
+                             VerticalAlignment="Top" Margin="20,10,20,0">
                     <StackPanel Margin="0">
                         <StackPanel Orientation="Horizontal">
+
                             <!-- Dropdown til biografsale -->
                             <StackPanel>
-                                <Label Content="Vælg Biograf: "
-                       Foreground="AliceBlue"/>
+                                <Label Content="Vælg Biograf: " Foreground="AliceBlue"/>
                                 <ComboBox ItemsSource="{Binding HallsCollectionView, UpdateSourceTrigger=PropertyChanged}"
-                                      SelectedItem="{Binding Hall, UpdateSourceTrigger=PropertyChanged}" 
-                                      Margin="5 0 0 0"
-                                      Width="160">
+                                          SelectedItem="{Binding Hall, UpdateSourceTrigger=PropertyChanged}" 
+                                          Margin="5 0 0 0"
+                                          Width="160">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
                                             <TextBlock>
@@ -169,11 +117,10 @@
                         </StackPanel>
 
                         <!-- Dropdown til filmtitler -->
-                        <Label Content="Vælg Filmtitel: "
-                   Foreground="AliceBlue"/>
+                        <Label Content="Vælg Filmtitel: " Foreground="AliceBlue"/>
                         <ComboBox ItemsSource="{Binding MoviesCollectionView, UpdateSourceTrigger=PropertyChanged}"
-                      SelectedItem="{Binding Movie, UpdateSourceTrigger=PropertyChanged}"
-                      HorizontalAlignment="Left" Margin="5 0 0 5" Width="160">
+                                  SelectedItem="{Binding Movie, UpdateSourceTrigger=PropertyChanged}"
+                                  HorizontalAlignment="Left" Margin="5 0 0 5" Width="160">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding title, UpdateSourceTrigger=PropertyChanged}"                                      />
@@ -182,23 +129,52 @@
                         </ComboBox>
 
                         <!-- Indtast Premieredato -->
-                        <Label Content="Indtast Premieredato: "
-                   Foreground="AliceBlue"/>
-                        <DatePicker Margin="0,0,0,20"
-                        SelectedDate="{Binding PremiereDate, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Label Content="Indtast Premieredato: " Foreground="AliceBlue"/>
+                        <DatePicker Margin="0,0,0,20" SelectedDate="{Binding PremiereDate, UpdateSourceTrigger=PropertyChanged}"/>
 
                         <!-- Tilføj knap -->
                         <Button Content="Tilføj"
-                    Command="{Binding AddMovieProgramCommand, 
-                    UpdateSourceTrigger=PropertyChanged}"
-                    Width="150" Height="30" Margin="0 15 0 0"/>
+                                Command="{Binding AddMovieProgramCommand, UpdateSourceTrigger=PropertyChanged}"
+                                Width="90" Height="30" Margin="0,0,0,10"
+                                HorizontalAlignment="Left"/>
                     </StackPanel>
                 </GroupBox>
 
-                <!-- Opdater/fjern filmprogram -->
+                <!-- Forestillingstider -->
+                <GroupBox Header="Forestillingstider" Foreground="AliceBlue" Margin="20,20,20,0" BorderThickness="0.8">
+                    <StackPanel Orientation="Vertical">
+
+                        <Label Content="Indtast Forestillingstidpunkt: " Foreground="AliceBlue"/>
+                        <TextBox Text="{Binding MovieScreeningTime, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                 Height="30" Margin="5, 0, 5, 0"/>
+                        
+                        <Button Content="Tilføj"
+                                Command="{Binding AddMovieScreeningCommand, UpdateSourceTrigger=PropertyChanged}"
+                                Width="90" Height="30" Margin="5,10,0,10"
+                                HorizontalAlignment="Left"/>
+
+                        <Label Content="Fjern valgt forestillingstidpunkt" Foreground="AliceBlue"/>
+                        <ComboBox 
+                                ItemsSource="{Binding MovieScreeningsCollectionView, UpdateSourceTrigger=PropertyChanged}"
+                                SelectedItem="{Binding SelectedMovieScreening, UpdateSourceTrigger=PropertyChanged}"
+                                HorizontalAlignment="Left" Width="150"
+                                Margin="5,0,5,0">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding MovieScreeningDateTime, UpdateSourceTrigger=PropertyChanged}"                                      />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>                     
+
+                            <Button Content="Fjern"
+                                    Command="{Binding RemoveMovieScreeningCommand, UpdateSourceTrigger=PropertyChanged}"
+                                    Width="90" Height="30" Margin="5,10,0,10"
+                                    HorizontalAlignment="Left"/>
+
+                        </StackPanel>
+                </GroupBox>
 
                 <StackPanel>
-
                     <!-- Opdater/Slet filmprogram -->
                     <GroupBox 
               Header="Opdater/Fjern Filmprogram" 
@@ -213,7 +189,7 @@
                                     <Label Content="Vælg Biograf: " 
                                        Foreground="AliceBlue"/>
                                     <ComboBox ItemsSource="{Binding CinemasCollectionView, UpdateSourceTrigger=PropertyChanged}"
-                                          SelectedValue="{Binding SelectedMovieProgram.Movie.title, UpdateSourceTrigger=PropertyChanged}"
+                                          SelectedValue="{Binding SelectedMovieProgram.Hall.Name, UpdateSourceTrigger=PropertyChanged}"
                                           SelectedValuePath="Name"
                                           DisplayMemberPath="Name" 
                                           Margin="0,5,0,10" />

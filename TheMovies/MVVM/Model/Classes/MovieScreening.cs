@@ -4,22 +4,20 @@
     {
         public Guid Id { get; set; }
         public DateTime MovieScreeningDateTime { get; set; }
-        public Guid MovieProgramId { get; set; }
         public int AvailableTickets { get; set; }
-        public CinemaHall Hall { get; set; }
+        public MovieProgram MovieProgram { get; set; }
 
-        public MovieScreening(Guid id, DateTime movieScreeningDateTime, Guid movieProgramId, int availableTickets, CinemaHall hall)
+        public MovieScreening(Guid id, DateTime movieScreeningDateTime, int availableTickets, MovieProgram movieProgram)
         {
             Id = id;
             MovieScreeningDateTime = movieScreeningDateTime;
-            MovieProgramId = movieProgramId;
             AvailableTickets = availableTickets;
-            Hall = hall;
+            MovieProgram = movieProgram;
         }
 
         public override string ToString()
         {
-            return $"{Id},{MovieScreeningDateTime},{MovieProgramId}, {AvailableTickets}";
+            return $"{Id},{MovieScreeningDateTime},{AvailableTickets},{MovieProgram}";
         }
 
         public static MovieScreening FromString(string input)
@@ -29,9 +27,8 @@
             (
                 Guid.Parse(parts[0]),
                 DateTime.Parse(parts[1]),
-                Guid.Parse(parts[2]),
-                int.Parse(parts[3]),
-                new CinemaHall(Guid.Parse(parts[4]), parts[5], int.Parse(parts[6]), new Cinema(Guid.Parse(parts[7]), parts[8], parts[9]))
+                int.Parse(parts[2]),
+                new MovieProgram(Guid.Parse(parts[3]), TimeSpan.Parse(parts[4]), DateTime.Parse(parts[5]), new Movie(Guid.Parse(parts[6]), parts[7], parts[8], parts[9], TimeSpan.Parse(parts[10])), new CinemaHall(Guid.Parse(parts[11]), parts[12], int.Parse(parts[13]), new Cinema(Guid.Parse(parts[14]), parts[15], parts[16])))
             );
         }
     }

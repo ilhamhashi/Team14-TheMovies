@@ -17,13 +17,6 @@ namespace TheMovies.MVVM.ViewModel
         public ICollectionView? MovieProgramsCollectionView { get; set; }
         public ICollectionView? MovieScreeningsCollectionView { get; set; }
 
-
-        private Guid bookingId;
-        public Guid BookingId
-        {
-            get { return bookingId; }
-            set { bookingId = value; OnPropertyChanged(); }
-        }
         private int ticketCount;
         public int TicketCount
         {
@@ -42,12 +35,29 @@ namespace TheMovies.MVVM.ViewModel
             get { return bookingDate; }
             set { bookingDate = value; OnPropertyChanged(); }
         }
-        private Customer newCustomer;
-        public Customer NewCustomer
+
+        private string name;
+        public string Name
         {
-            get { return newCustomer; }
-            set { newCustomer = value; OnPropertyChanged(); }
+            get { return name; }
+            set { name = value; OnPropertyChanged(); }
         }
+
+        private string email;
+
+        public string Email
+        {
+            get { return email; }
+            set { email = value; OnPropertyChanged(); }
+        }
+
+        private int phone;
+        public int Phone
+        {
+            get { return phone; }
+            set { phone = value; OnPropertyChanged(); }
+        }
+
         private MovieScreening selectedMovieScreening;
         public MovieScreening SelectedMovieScreening
         {
@@ -61,19 +71,6 @@ namespace TheMovies.MVVM.ViewModel
             get { return selectedBooking; }
             set { selectedBooking = value; OnPropertyChanged(); }
         }
-        private MovieProgram selectedMovieProgram;
-        public MovieProgram SelectedMovieProgram
-        {
-            get { return selectedMovieProgram; }
-            set { selectedMovieProgram = value; OnPropertyChanged(); }
-        }
-        private CinemaHall selectedCinemaHall;
-        public CinemaHall SelectedCinemaHall
-        {
-            get { return selectedCinemaHall; }
-            set { selectedCinemaHall = value; OnPropertyChanged(); }
-        }
-
         private string searchTerm = string.Empty;
         public string SearchTerm
         {
@@ -90,8 +87,7 @@ namespace TheMovies.MVVM.ViewModel
         public ICommand UpdateBookingCommand { get; }
         public ICommand RemoveBookingCommand { get; }
 
-        private bool CanAddBooking() => TicketCount != 0 && NewCustomer != null && SelectedMovieScreening != null &&
-                                        AvailableTickets != 0 && SelectedMovieProgram != null;
+        private bool CanAddBooking() => TicketCount != 0 && SelectedMovieScreening != null && !string.IsNullOrWhiteSpace(Name) && !string.IsNullOrWhiteSpace(Email);
                                      
         private bool CanUpdateBooking() => SelectedBooking != null;
         private bool CanRemoveBooking() => SelectedBooking != null;
@@ -114,10 +110,11 @@ namespace TheMovies.MVVM.ViewModel
         {
             if (SelectedMovieScreening.AvailableTickets >= TicketCount)
             {
-                SelectedMovieScreening.AvailableTickets -= TicketCount;
-                Booking booking = new Booking(Guid.NewGuid(), TicketCount, BookingDate, NewCustomer, SelectedMovieScreening);
+                Customer customer = new Customer(Guid.NewGuid(), Name, Email, Phone);
+                Booking booking = new Booking(Guid.NewGuid(), TicketCount, BookingDate, customer, SelectedMovieScreening);
                 bookingRepository.AddBooking(booking);
                 Bookings.Add(booking);
+                SelectedMovieScreening.AvailableTickets =- TicketCount;
 
                 //Vis bekræftelse
                 MessageBox.Show($"Bookingen er tilføjet til listen.",
@@ -134,7 +131,9 @@ namespace TheMovies.MVVM.ViewModel
             //Nulstil felter
             TicketCount = 0;
             BookingDate = DateTime.Now;
-            NewCustomer = null;
+            Name = string.Empty;
+            Email = string.Empty;
+            Phone = 0;
             SelectedMovieScreening = null;
         }
         private void UpdateBooking()
@@ -152,21 +151,21 @@ namespace TheMovies.MVVM.ViewModel
         private void RemoveBooking()
         {
 
-            MessageBoxResult result = MessageBox.Show($"Er du sikker på, at du vil fjerne reservation for {SelectedBooking.Customer.Name}?",
+            MessageBoxResult result = MessageBox.Show($"Er du sikker på, at du vil fjerne bookingen for {SelectedBooking.Customer.Name}?",
             "Er du enig?", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
             if (result == MessageBoxResult.Yes)
             {
-                //fjern movie i repository og observablecollection
+                
                 bookingRepository.RemoveBooking(SelectedBooking);
                 Bookings.Remove(SelectedBooking);
 
-                MessageBox.Show($"Reservationen er fjernet fra listen.",
+                MessageBox.Show($"Bookingen er fjernet fra listen.",
                                 "Udført", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
             {
-                MessageBox.Show($"Reservationen blev ikke fjernet fra listen.",
+                MessageBox.Show($"Bookingen blev ikke fjernet fra listen.",
                                 "Annulleret", MessageBoxButton.OK, MessageBoxImage.Information);
             }
 
@@ -179,7 +178,7 @@ namespace TheMovies.MVVM.ViewModel
             {
                 return booking.Customer.Name.Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase) ||
                        booking.Customer.Email.Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase) ||
-                       booking.Customer.PhoneNumber.ToString().Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase);
+                       booking.Customer.Phone.ToString().Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase);
                 // Skal kunne søge efter bookinger ud fra kundeinfo som navn, mail og nummer
             }
             return false;

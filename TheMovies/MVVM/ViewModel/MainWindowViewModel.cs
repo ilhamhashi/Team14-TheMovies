@@ -21,31 +21,23 @@ namespace TheMovies.MVVM.ViewModel
         }
 
         // Command der binder til knapperne i menuen
-        public RelayCommand HomeViewCommand { get; set; }
         public RelayCommand MovieViewCommand { get; set; }
         public RelayCommand MovieProgramViewCommand { get; set; }
         public RelayCommand BookingViewCommand { get; set; }
         public RelayCommand CloseMainWindowCommand { get; set; }
 
         // Definerer de forskellige viewmodels, der kan vises i indholdssektionen
-        public HomeViewModel HomeVM { get; set; }
         public MovieViewModel MovieVM { get; set; }
         public MovieProgramViewModel MovieProgramVM { get; set; }
         public BookingViewModel BookingVM { get; set; }
 
         public MainWindowViewModel()
         {
-            HomeVM = new HomeViewModel();
             MovieVM = new MovieViewModel();
             MovieProgramVM = new MovieProgramViewModel();
             BookingVM = new BookingViewModel();
 
-            CurrentView = HomeVM;
-
-            HomeViewCommand = new RelayCommand(o =>
-            {
-                CurrentView = HomeVM;
-            });
+            CurrentView = MovieVM;
 
             MovieViewCommand = new RelayCommand(o =>
             {

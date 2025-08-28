@@ -101,12 +101,14 @@ namespace TheMovies.MVVM.ViewModel
         public ICommand AddMovieProgramCommand { get; }
         public ICommand UpdateMovieProgramCommand { get; }
         public ICommand RemoveMovieprogramCommand { get; }
-        public ICommand OpenPrintWindowCommand { get; }
-        public ICommand OpenBookingWindowCommand { get; }
+        public ICommand AddMovieScreeningCommand { get; }
+        public ICommand RemoveMovieScreeningCommand { get; }
 
         private bool CanAddMovieProgram() => Hall != null && Movie != null;
         private bool CanUpdateMovieProgram() => SelectedMovieProgram != null;
         private bool CanRemoveMovieprogram() => SelectedMovieProgram != null;
+        private bool CanAddMovieScreening() => selectedMovieProgram != null;
+        private bool CanRemoveMovieScreening() => SelectedMovieScreening != null;
 
         public MovieProgramViewModel()
         {
@@ -121,7 +123,8 @@ namespace TheMovies.MVVM.ViewModel
             MoviesCollectionView = CollectionViewSource.GetDefaultView(MovieViewModel.MoviesCollectionView);
             MovieProgramsCollectionView.Filter = MovieProgramsFilter;
 
-
+            AddMovieScreeningCommand = new RelayCommand(_ => AddMovieScreening(), _ => CanAddMovieScreening());
+            RemoveMovieScreeningCommand = new RelayCommand(_ => RemoveMovieScreening(), _ => CanRemoveMovieScreening());
             AddMovieProgramCommand = new RelayCommand(_ => AddMovieProgram(), _ => CanAddMovieProgram());
             UpdateMovieProgramCommand = new RelayCommand(_ => UpdateMovieProgram(), _ => CanUpdateMovieProgram());
             RemoveMovieprogramCommand = new RelayCommand(_ => RemoveMovieProgram(), _ => CanRemoveMovieprogram());        
@@ -130,7 +133,7 @@ namespace TheMovies.MVVM.ViewModel
         private void AddMovieProgram()
         {
             //opret objekt og tilføj til repository og observablecollection
-            MovieProgram movieProgram = new MovieProgram(Guid.NewGuid(), Duration, PremiereDate, Movie);
+            MovieProgram movieProgram = new MovieProgram(Guid.NewGuid(), Duration, PremiereDate, Movie, Hall);
             movieProgramRepository.AddMovieProgram(movieProgram);
             MoviePrograms.Add(movieProgram);
 
@@ -146,13 +149,13 @@ namespace TheMovies.MVVM.ViewModel
         private void AddMovieScreening()
         {
             //opret objekt og tilføj til repository og observablecollection
-            AvailableTickets = Hall.SeatCount;
-            MovieScreening movieScreening = new MovieScreening(Guid.NewGuid(), MovieScreeningTime, SelectedMovieProgram.Id, AvailableTickets, Hall);
+            AvailableTickets = SelectedMovieProgram.Hall.SeatCount;
+            MovieScreening movieScreening = new MovieScreening(Guid.NewGuid(), MovieScreeningTime, AvailableTickets, SelectedMovieProgram);
             movieScreeningRepository.AddMovieScreening(movieScreening);
             MovieScreenings.Add(movieScreening);
 
             //vis bekræftelse
-            MessageBox.Show($"Forestilling for {Movie.title} i biografsalen {Hall.Name}, tilføjet!", "Udført", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show($"Forestilling for filmen {SelectedMovieProgram.Movie.title} i biografen {SelectedMovieProgram.Hall.Cinema.Name}, {SelectedMovieProgram.Hall.Name}, tilføjet!", "Udført", MessageBoxButton.OK, MessageBoxImage.Information);
 
             //nulstil felter
             MovieScreeningTime = DateTime.Now;
@@ -170,7 +173,15 @@ namespace TheMovies.MVVM.ViewModel
 
             //nulstil valgt movie
             SelectedMovieProgram = null;
+        }
 
+        public void UpdateMovieScreening(MovieScreening movieScreening)
+        {
+            //opdater movie i repository
+            movieScreeningRepository.UpdateMovieScreening(movieScreening);
+
+            //vis bekræftelse 
+            MessageBox.Show($"Ændringerne er gemt", "Udført", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void RemoveMovieProgram()
@@ -195,6 +206,30 @@ namespace TheMovies.MVVM.ViewModel
             }
 
             SelectedMovieProgram = null;
+        }
+
+        private void RemoveMovieScreening()
+        {
+
+            MessageBoxResult result = MessageBox.Show($"Er du sikker på, at du vil fjerne forestillingen for {SelectedMovieProgram.Movie.title} i biografen {selectedMovieProgram.Hall.Cinema.Name}?",
+            "Er du enig?", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                //fjern movie i repository og observablecollection
+                movieScreeningRepository.RemoveMovieScreening(SelectedMovieScreening);
+                MovieScreenings.Remove(SelectedMovieScreening);
+
+                MessageBox.Show($"Forestillingen er fjernet fra listen.",
+                                "Udført", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show($"Forestillingen blev ikke fjernet fra listen.",
+                                "Annulleret", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+
+            SelectedMovieScreening = null;
         }
 
         private bool MovieProgramsFilter(object obj)

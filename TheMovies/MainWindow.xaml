@@ -6,11 +6,9 @@
         xmlns:local="clr-namespace:TheMovies"
         xmlns:viewModel="clr-namespace:TheMovies.MVVM.ViewModel"
         mc:Ignorable="d"
-        Height="600" Width="910"
-        WindowStyle="None"
-        ResizeMode="NoResize"
-        Background="Transparent"
-        AllowsTransparency="True">
+        Height="1020" Width="1020"
+        WindowStyle="SingleBorderWindow"
+        Background="Transparent">
 
     <Window.DataContext>
         <viewModel:MainWindowViewModel/>
@@ -19,11 +17,13 @@
     <Border Background="#272537" CornerRadius="20">
         <Grid>
 
+            <!-- Definerer kolonner -->
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="200"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
+            <!-- Definerer rækker -->
             <Grid.RowDefinitions>
                 <RowDefinition Height="75"/>
                 <RowDefinition/>
@@ -31,61 +31,54 @@
 
             <!-- Knap lukker programmet -->
             <Button Style="{DynamicResource ButtonStyle1}" Grid.Column="1" 
-                Background="Transparent"
-                Foreground="White"
-                BorderBrush="Transparent"
-                Content = "X"
-                FontSize="16"
-                FontWeight="Light"
-                HorizontalAlignment="Right"
-                Margin="0,0,20,0"
-                Command="{Binding CloseMainWindowCommand}" />
-
+                    Background="Transparent"
+                    Foreground="White"
+                    BorderBrush="Transparent"
+                    Content = "X"
+                    FontSize="16"
+                    FontWeight="Light"
+                    HorizontalAlignment="Right"
+                    Margin="0,0,20,0"
+                    Command="{Binding CloseMainWindowCommand}" />
+            
+            <!-- Overskrift -->        
             <TextBlock Text="The Movies"
-           VerticalAlignment="Center"
-           HorizontalAlignment="Left"
-           Foreground="White"
-           FontSize="22"
-           Margin="20,0,0,0"/>
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Left"
+                       Foreground="White"
+                       FontSize="22"
+                       Margin="20,0,0,0"/>
 
             <StackPanel Grid.Row="1">
 
-                <RadioButton Content="Forside"
-                         Height="50"
-                         Foreground="White"
-                         FontSize="14"
-                         Style="{StaticResource MenuButtonTheme}"
-                         IsChecked="True"
-                         Command="{Binding HomeViewCommand}"/>
-
                 <RadioButton Content="Film"
-                         Height="50"
-                         Foreground="White"
-                         FontSize="14"
-                         Style="{StaticResource MenuButtonTheme}"
-                         Command="{Binding MovieViewCommand}"/>
+                             Height="50"
+                             Foreground="White"
+                             FontSize="14"
+                             IsChecked="True"
+                             Style="{StaticResource MenuButtonTheme}"
+                             Command="{Binding MovieViewCommand}"/>
 
                 <RadioButton Content="Programmer"
-                         Height="50"
-                         Foreground="White"
-                         FontSize="14"
-                         Style="{StaticResource MenuButtonTheme}"
-                         Command="{Binding MovieProgramViewCommand}"/>
+                             Height="50"
+                             Foreground="White"
+                             FontSize="14"
+                             Style="{StaticResource MenuButtonTheme}"
+                             Command="{Binding MovieProgramViewCommand}"/>
 
                 <RadioButton Content="Bookinger"
-                         Height="50"
-                         Foreground="White"
-                         FontSize="14"
-                         Style="{StaticResource MenuButtonTheme}"
-                         Command="{Binding BookingViewCommand}"/>
+                             Height="50"
+                             Foreground="White"
+                             FontSize="14"
+                             Style="{StaticResource MenuButtonTheme}"
+                             Command="{Binding BookingViewCommand}"/>
             </StackPanel>
             
-            <!--  -->
-
+            <!-- Indhold skifter afhængig af menuvalg -->
             <ContentControl Grid.Row="1"
-                        Grid.Column="1"
-                        Margin="10"
-                        Content="{Binding CurrentView}"/>
+                            Grid.Column="1"
+                            Margin="10"
+                            Content="{Binding CurrentView}"/>
         </Grid>
     </Border>
 </Window>

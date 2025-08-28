@@ -86,7 +86,7 @@ namespace TheMovies.MVVM.Model.Repositories
             List<MovieScreening> demoMovieScreenings = new List<MovieScreening>();
 
             MovieScreening movieScreening1 = new MovieScreening
-                (Guid.NewGuid(), DateTime.Now, FileMovieProgramRepository.demoMoviePrograms()[0].Id, 0, FileCinemaHallRepository.demoCinemaHalls()[2]);
+                (Guid.NewGuid(), DateTime.Now, 50, FileMovieProgramRepository.demoMoviePrograms()[0]);
 
             demoMovieScreenings.Add(movieScreening1);
 

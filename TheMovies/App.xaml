@@ -13,11 +13,7 @@
 
             <DataTemplate DataType="{x:Type viewmodel:MovieViewModel}">
                 <view:MovieView/>
-            </DataTemplate>
-            
-            <DataTemplate DataType="{x:Type viewmodel:HomeViewModel}">
-                <view:HomeView/>
-            </DataTemplate>
+            </DataTemplate>         
             
             <DataTemplate DataType="{x:Type viewmodel:MovieProgramViewModel}">
                 <view:MovieProgramView/>
