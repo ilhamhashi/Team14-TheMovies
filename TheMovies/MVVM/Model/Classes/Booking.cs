@@ -37,8 +37,8 @@ namespace TheMovies.MVVM.Model.Classes
                 int.Parse(parts[1]),
                 DateTime.Parse(parts[2]),
                 new Customer(Guid.Parse(parts[3]), parts[4], parts[5],int.Parse(parts[6])),
-                new MovieScreening(Guid.Parse(parts[7]), DateTime.Parse(parts[8]), Guid.Parse(parts[9]))
-            );
+                new MovieScreening(Guid.Parse(parts[7]), DateTime.Parse(parts[8]), Guid.Parse(parts[9]), int.Parse(parts[10]), new CinemaHall(Guid.Parse(parts[11]), parts[12], int.Parse(parts[13]), new Cinema(Guid.Parse(parts[14]), parts[15], parts[16]))
+            ));
         }
     }
 }

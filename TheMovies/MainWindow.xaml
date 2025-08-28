@@ -4,189 +4,88 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TheMovies"
-        xmlns:ViewModel="clr-namespace:TheMovies.MVVM.ViewModel"
+        xmlns:viewModel="clr-namespace:TheMovies.MVVM.ViewModel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="800" Width="900"
-        Background="#272537">
+        Height="600" Width="910"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        Background="Transparent"
+        AllowsTransparency="True">
+
     <Window.DataContext>
-        <ViewModel:MainWindowViewModel/>
+        <viewModel:MainWindowViewModel/>
     </Window.DataContext>
+    
+    <Border Background="#272537" CornerRadius="20">
+        <Grid>
 
-    <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
 
-        <!-- Definerer rækker -->
-        <Grid.RowDefinitions>
-            <RowDefinition Height="80"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="75"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
 
-        <!-- Definerer kolonner -->
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="45*"/>
-            <ColumnDefinition Width="55*"/>
-        </Grid.ColumnDefinitions>
-
-        <!-- Overskrift -->
-        <Label Content="THE MOVIES"
-               Foreground="AliceBlue"
-               FontSize="25"
-               FontWeight="DemiBold"
-               Margin="20,20,20,20"/>
-        
-        <Button Grid.Column="1" 
-                Content="ÅBN FILMPROGRAM" 
-                Command="{Binding OpenWindowCommand, 
-                UpdateSourceTrigger=PropertyChanged}"
-                Width="150" Height="30"
+            <!-- Knap lukker programmet -->
+            <Button Style="{DynamicResource ButtonStyle1}" Grid.Column="1" 
+                Background="Transparent"
+                Foreground="White"
+                BorderBrush="Transparent"
+                Content = "X"
+                FontSize="16"
+                FontWeight="Light"
                 HorizontalAlignment="Right"
-                Margin="0 0 50 0"/>
+                Margin="0,0,20,0"
+                Command="{Binding CloseMainWindowCommand}" />
 
-        <!-- Filmliste -->
-        <GroupBox Grid.Row="1" 
-                  Header="Filmdatabase" 
-                  Foreground="AliceBlue" 
-                  FontSize="16"
-                  Margin="20,20,20,20">
+            <TextBlock Text="The Movies"
+           VerticalAlignment="Center"
+           HorizontalAlignment="Left"
+           Foreground="White"
+           FontSize="22"
+           Margin="20,0,0,0"/>
+
+            <StackPanel Grid.Row="1">
+
+                <RadioButton Content="Forside"
+                         Height="50"
+                         Foreground="White"
+                         FontSize="14"
+                         Style="{StaticResource MenuButtonTheme}"
+                         IsChecked="True"
+                         Command="{Binding HomeViewCommand}"/>
+
+                <RadioButton Content="Film"
+                         Height="50"
+                         Foreground="White"
+                         FontSize="14"
+                         Style="{StaticResource MenuButtonTheme}"
+                         Command="{Binding MovieViewCommand}"/>
+
+                <RadioButton Content="Programmer"
+                         Height="50"
+                         Foreground="White"
+                         FontSize="14"
+                         Style="{StaticResource MenuButtonTheme}"
+                         Command="{Binding MovieProgramViewCommand}"/>
+
+                <RadioButton Content="Bookinger"
+                         Height="50"
+                         Foreground="White"
+                         FontSize="14"
+                         Style="{StaticResource MenuButtonTheme}"
+                         Command="{Binding BookingViewCommand}"/>
+            </StackPanel>
             
-            <!-- Listen kan scrolle, hvis den bliver lang -->
-            <ScrollViewer Grid.Row="1" 
-                          VerticalScrollBarVisibility="Auto">
+            <!--  -->
 
-                <!-- Listbox oversigt over Movies liste -->
-                <ListBox Name="MoviesList" 
-                         ItemsSource="{Binding MoviesCollectionView, UpdateSourceTrigger=PropertyChanged}"
-                         SelectedItem="{Binding SelectedMovie, UpdateSourceTrigger=PropertyChanged}"
-                         HorizontalAlignment="Stretch"
-                         Background="Transparent"
-                         BorderThickness="0">
-
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Margin="5" Orientation="Vertical">
-
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Path=title, UpdateSourceTrigger=PropertyChanged}" 
-                                               Foreground="AliceBlue" FontWeight="Bold"/>
-                                </StackPanel>
-                                
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="Instruktør: "
-                                               FontSize="14" Foreground="AliceBlue"/>
-                                    <TextBlock Text="{Binding Path=director, UpdateSourceTrigger=PropertyChanged}" 
-                                               Foreground="AliceBlue" FontSize="14"/>
-                                </StackPanel>
-
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="Genre: "
-                                               FontSize="14" Foreground="AliceBlue"/>
-                                    <TextBlock Text="{Binding Path=genre, UpdateSourceTrigger=PropertyChanged}" 
-                                               Foreground="AliceBlue" FontSize="14"/>
-                                </StackPanel>
-
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="Varighed: "
-                                               FontSize="14" Foreground="AliceBlue"/>
-                                    <TextBlock Text="{Binding Path=movieLength, UpdateSourceTrigger=PropertyChanged}" 
-                                               Foreground="AliceBlue" FontSize="14" />
-                                </StackPanel>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-
-            </ScrollViewer>
-        </GroupBox>
-
-        <StackPanel Grid.Row="1" Grid.Column="1" >
-            <GroupBox Header="Søg" 
-                      Foreground="AliceBlue" 
-                      FontSize="16"
-                      Margin="20,20,20,0">
-                
-                <TextBox Text="{Binding SearchTerm, UpdateSourceTrigger=PropertyChanged}"
-                         Background="Transparent"
-                         Foreground="AliceBlue"
-                         BorderThickness="0"
-                         CaretBrush="AliceBlue"/>
-            </GroupBox>
-
-            <!-- Tilføj film -->
-            <GroupBox
-                  Header="Tilføj Film" 
-                  Foreground="AliceBlue" 
-                  FontSize="16"
-                  Margin="20,10,20,0">
-
-                <StackPanel Margin=" 10">
-                    <Label Content="Indtast filmtitel: "
-                           Foreground="AliceBlue"/>
-                    <TextBox Text="{Binding MovieTitle, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                         Height="20"/>
-                    <Label Content="Indtast filminstruktør: "
-                           Foreground="AliceBlue"/>
-                    <TextBox Text="{Binding MovieDirector, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                         Height="20"/>
-
-                    <Label Content="Indtast filmgenre: "
-                           Foreground="AliceBlue"/>
-                    <TextBox Text="{Binding MovieGenre, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                         Height="20"/>
-
-                    <Label Content="Indtast filmvarighed: "
-                           Foreground="AliceBlue"/>
-                    <TextBox Text="{Binding MovieLength, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                         Height="20"/>
-
-                    <Button Content="Tilføj"
-                            Command="{Binding AddMovieCommand, UpdateSourceTrigger=PropertyChanged}"
-                            Margin="0,20,0,0"/>
-                </StackPanel>
-
-            </GroupBox>
-
-            <!-- Opdater/Slet film -->
-            <GroupBox 
-                  Header="Opdater/Fjern Film" 
-                  Foreground="AliceBlue" 
-                  FontSize="16"
-                  Margin="20,10,20,0">
-
-                <StackPanel Margin=" 10">
-                    <Label Content="Filmtitel: "
-                           Foreground="AliceBlue"/>
-                    <TextBox Text="{Binding SelectedMovie.title, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                         Height="20"/>
-                    
-                    <Label Content="Instruktør: "
-                           Foreground="AliceBlue"/>
-                    <TextBox Text="{Binding SelectedMovie.director, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                         Height="20"/>
-
-                    <Label Content="Filmgenre: "
-                           Foreground="AliceBlue"/>
-                    <TextBox Text="{Binding SelectedMovie.genre, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                         Height="20"/>
-
-                    <Label Content="Filmvarighed: "
-                           Foreground="AliceBlue"/>
-                    <TextBox Text="{Binding SelectedMovie.movieLength, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                         Height="20"/>
-
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-
-                        <Button Content="Opdater"
-                            Command="{Binding UpdateMovieCommand, UpdateSourceTrigger=PropertyChanged}"
-                            Margin="0,20,20,0"/>
-
-                        <Button Content="Fjern"
-                            Command="{Binding RemoveMovieCommand, UpdateSourceTrigger=PropertyChanged}"
-                            Margin="0,20,0,0"/>
-
-                    </StackPanel>
-
-                </StackPanel>
-            </GroupBox>
-
-        </StackPanel>
-    </Grid>
+            <ContentControl Grid.Row="1"
+                        Grid.Column="1"
+                        Margin="10"
+                        Content="{Binding CurrentView}"/>
+        </Grid>
+    </Border>
 </Window>

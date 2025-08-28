@@ -1,12 +1,305 @@
-﻿<Window x:Class="TheMovies.MVVM.View.BookingView"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:TheMovies.MVVM.View"
-        mc:Ignorable="d"
-        Title="BookingView" Height="450" Width="800">
+﻿<UserControl x:Class="TheMovies.MVVM.View.BookingView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TheMovies.MVVM.View"
+             xmlns:viewModel="clr-namespace:TheMovies.MVVM.ViewModel"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    
+    <UserControl.DataContext>
+        <viewModel:BookingViewModel/>
+    </UserControl.DataContext>
+
     <Grid>
-        
+        <!-- Definerer rækker -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="800"/>
+        </Grid.RowDefinitions>
+
+        <!-- Definerer kolonner -->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="45*"/>
+            <ColumnDefinition Width="45*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Overskrift -->
+        <Label Content="THE MOVIES"
+               Foreground="AliceBlue"
+               FontSize="30"
+               FontWeight="DemiBold"
+               Margin="20,20,20,20"/>
+
+        <StackPanel Grid.Column="1">
+            <GroupBox Header="Søg" Foreground="AliceBlue" FontSize="16"
+                      BorderThickness="0.8"
+                      Margin="20,20,20,0"
+                      Height="50"
+                      Width="300"
+                      HorizontalAlignment="Right">
+
+                <TextBox Text="{Binding SearchTerm, UpdateSourceTrigger=PropertyChanged}"
+                         Background="Transparent"
+                         Foreground="AliceBlue"
+                         BorderThickness="0"
+                         CaretBrush="AliceBlue"/>
+            </GroupBox>
+        </StackPanel>
+
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <StackPanel>
+                <!-- Felt til angivelse af billetantal -->
+                <StackPanel Margin="20 20 0 0" Orientation="Horizontal">
+                    <Label Content="Angiv ønskede billetantal: "
+                           Foreground="AliceBlue" FontSize="16"/>
+                    <TextBox Text="{Binding TicketCount,
+                               UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                               Background="AliceBlue"
+                               Width="50" HorizontalAlignment="Left"
+                               Margin="80 5 0 5"/>
+                </StackPanel>
+
+                <!-- Filmprogramliste (Booking) -->
+                <GroupBox VerticalAlignment="Top"
+                  Header="Filmprogrammer"
+                  Foreground="AliceBlue"
+                  FontSize="16" HorizontalAlignment="Left"
+                  Margin="10 10 0 0" Height="289" Width="350"
+                  BorderThickness="0.8">
+                    <!-- Listen kan scrolle, hvis den bliver lang -->
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto">
+                        <!-- Listbox oversigt over MovieProgramCollection -->
+                        <ListBox ItemsSource="{Binding MovieProgramsCollectionView, UpdateSourceTrigger=PropertyChanged}"
+                             SelectedItem="{Binding SelectedMovieProgram, UpdateSourceTrigger=PropertyChanged}"
+                             Background="Transparent"
+                             BorderThickness="0">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Margin="5" Orientation="Vertical">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Path=Hall.Name, UpdateSourceTrigger=PropertyChanged}" 
+                                                   FontWeight="Bold" Foreground="AliceBlue"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Path=Hall.Cinema.Name, UpdateSourceTrigger=PropertyChanged}" 
+                                                   FontWeight="DemiBold" Foreground="AliceBlue"/>
+                                            <TextBlock Text=", " FontWeight="DemiBold" Foreground="AliceBlue"/>
+                                            <TextBlock Text="{Binding Path=Hall.Cinema.City, UpdateSourceTrigger=PropertyChanged}"
+                                                   FontWeight="DemiBold" Foreground="AliceBlue"/>
+                                        </StackPanel>
+
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="Film: "
+                                                   FontWeight="DemiBold" FontSize="14" Foreground="AliceBlue"/>
+                                            <TextBlock Text="{Binding Path=Movie.title, UpdateSourceTrigger=PropertyChanged}" 
+                                                   Foreground="AliceBlue" FontSize="14"/>
+                                            <TextBlock Text=", " Foreground="AliceBlue" FontSize="14"/>
+                                            <TextBlock Text="{Binding Path=Movie.director, UpdateSourceTrigger=PropertyChanged}" 
+                                                   Foreground="AliceBlue" FontSize="14"/>
+                                        </StackPanel>
+
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="Premiere: "
+                                                   FontWeight="DemiBold" FontSize="14" Foreground="AliceBlue"/>
+                                            <TextBlock Text="{Binding Path=PremiereDate, UpdateSourceTrigger=PropertyChanged}" 
+                                                   Foreground="AliceBlue" FontSize="14" />
+                                        </StackPanel>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+
+                        </ListBox>
+                    </ScrollViewer>
+
+                </GroupBox>
+
+                <!-- Filmprogramliste (Booking) -->
+                <StackPanel Margin="20 20 0 0" Orientation="Horizontal">
+                    <Label Content="Ændre ønskede billetantal: "
+           Foreground="AliceBlue" FontSize="16"/>
+                    <TextBox Text="{Binding SelectedBooking.TicketCount,
+                   UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                   Background="AliceBlue"
+                   Width="50" HorizontalAlignment="Left"
+                   Margin="80 5 0 5"/>
+                </StackPanel>
+
+                <GroupBox VerticalAlignment="Top"
+          Header="Bookinger"
+          Foreground="AliceBlue"
+          FontSize="16" HorizontalAlignment="Left"
+          Margin="10 5 0 0" Height="345" Width="350"
+          BorderThickness="0.8">
+                    <!-- Listen kan scrolle, hvis den bliver lang -->
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto">
+                        <!-- Listbox oversigt over MovieProgramCollection -->
+                        <ListBox ItemsSource="{Binding BookingsCollectionView, UpdateSourceTrigger=PropertyChanged}"
+                 SelectedItem="{Binding SelectedBooking, UpdateSourceTrigger=PropertyChanged}"
+                 Background="Transparent"
+                 BorderThickness="0">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Margin="5" Orientation="Vertical">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBox Text="{Binding Path=Hall.Name, UpdateSourceTrigger=PropertyChanged}" 
+                                       FontWeight="Bold" Foreground="AliceBlue"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBox Text="{Binding Path=Hall.Cinema.Name, UpdateSourceTrigger=PropertyChanged}" 
+                                       FontWeight="DemiBold" Foreground="AliceBlue"/>
+                                            <TextBox Text=", " FontWeight="DemiBold" Foreground="AliceBlue"/>
+                                            <TextBox Text="{Binding Path=Hall.Cinema.City, UpdateSourceTrigger=PropertyChanged}"
+                                       FontWeight="DemiBold" Foreground="AliceBlue"/>
+                                        </StackPanel>
+
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBox Text="Film: "
+                                       FontWeight="DemiBold" FontSize="14" Foreground="AliceBlue"/>
+                                            <TextBox Text="{Binding Path=Movie.title, UpdateSourceTrigger=PropertyChanged}" 
+                                       Foreground="AliceBlue" FontSize="14"/>
+                                            <TextBox Text=", " Foreground="AliceBlue" FontSize="14"/>
+                                            <TextBox Text="{Binding Path=Movie.director, UpdateSourceTrigger=PropertyChanged}" 
+                                       Foreground="AliceBlue" FontSize="14"/>
+                                        </StackPanel>
+
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBox Text="Premiere: "
+                                       FontWeight="DemiBold" FontSize="14" Foreground="AliceBlue"/>
+                                            <TextBox Text="{Binding Path=PremiereDate, UpdateSourceTrigger=PropertyChanged}" 
+                                       Foreground="AliceBlue" FontSize="14" />
+                                        </StackPanel>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </ScrollViewer>
+                </GroupBox>
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" Grid.Row="1">
+
+            <GroupBox Header="Tilføj booking" Margin="10 10 0 0"
+                      FontSize="16" Foreground="AliceBlue"
+                      Width="320" Height="370" BorderThickness="0.8">
+                <StackPanel Orientation="Vertical">
+                    <Label Content="Vælg forestilling:"
+                           Foreground="AliceBlue"/>
+                    <ComboBox ItemsSource="{Binding MovieScreeningsCollectionView,
+                              UpdateSourceTrigger=PropertyChanged}"
+                              SelectedItem="{Binding SelectedMovieScreening,
+                              UpdateSourceTrigger=PropertyChanged}"
+                              Width="290">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding MovieScreeningTime,
+                                           UpdateSourceTrigger=PropertyChanged}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+
+                    <GroupBox Header="Tilføj kundeoplysninger:"
+                              Margin="5 15">
+                        <StackPanel Margin="0 10 0 15">
+                            <Label Content="Navn:" Foreground="AliceBlue"/>
+                            <TextBox Text="{Binding NewCustomer.Name,
+                                       UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                       Foreground="AliceBlue"
+                                       Background="AliceBlue"
+                                       Margin="10 0 10 0"/>
+
+                            <Label Content="Email:" Foreground="AliceBlue"/>
+                            <TextBox Text="{Binding NewCustomer.Email,
+                                       UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                       Foreground="AliceBlue"
+                                       Background="AliceBlue"
+                                       Margin="10 0 10 0"/>
+
+                            <Label Content="Telefonnr.:" Foreground="AliceBlue"/>
+                            <TextBox Text="{Binding NewCustomer.PhoneNumber,
+                                       UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                       Foreground="AliceBlue"
+                                       Background="AliceBlue"
+                                       Margin="10 0 10 0"/>
+
+                            <Button Content="Tilføj"
+                                        Command="{Binding AddBookingCommand,
+                                        UpdateSourceTrigger=PropertyChanged}"
+                                        Margin="10" Width="100"
+                                        VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </GroupBox>
+
+                </StackPanel>
+
+            </GroupBox>
+
+            <GroupBox Header="Opdater/Fjern booking" Margin="10 5 0 0"
+          FontSize="16" Foreground="AliceBlue"
+          Width="320" Height="370" BorderThickness="0.8">
+                <StackPanel Orientation="Vertical">
+                    <Label Content="Vælg forestilling:"
+               Foreground="AliceBlue"/>
+                    <ComboBox ItemsSource="{Binding MovieScreeningsCollectionView,
+                  UpdateSourceTrigger=PropertyChanged}"
+                  SelectedItem="{Binding SelectedMovieScreening,
+                  UpdateSourceTrigger=PropertyChanged}"
+                  Width="290">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding MovieScreeningTime,
+                               UpdateSourceTrigger=PropertyChanged}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+
+                    <GroupBox Header="Opdater/fjern kundeoplysninger:"
+                  Margin="5 15">
+                        <StackPanel Margin="0 10 0 -10">
+                            <Label Content="Navn:" Foreground="AliceBlue"/>
+                            <TextBox Text="{Binding SelectedBooking.Customer.Name,
+                           UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                           Foreground="AliceBlue"
+                           Background="AliceBlue"
+                           Margin="10 0 10 0"/>
+
+                            <Label Content="Email:" Foreground="AliceBlue"/>
+                            <TextBox Text="{Binding SelectedBooking.Customer.Email,
+                           UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                           Foreground="AliceBlue"
+                           Background="AliceBlue"
+                           Margin="10 0 10 0"/>
+
+                            <Label Content="Telefonnr.:" Foreground="AliceBlue"/>
+                            <TextBox Text="{Binding SelectedBooking.Customer.PhoneNumber,
+                           UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                           Foreground="AliceBlue"
+                           Background="AliceBlue"
+                           Margin="10 0 10 0"/>
+
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
+                            Margin="15">
+                                <Button Content="Opdater"
+                            Command="{Binding UpdateBookingCommand,
+                            UpdateSourceTrigger=PropertyChanged}"
+                            Margin="10" Width="100"/>
+
+                                <Button Content="Fjern"
+                            Command="{Binding RemoveBookingCommand,
+                            UpdateSourceTrigger=PropertyChanged}"
+                            Margin="10" Width="100"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </GroupBox>
+
+                </StackPanel>
+
+            </GroupBox>
+
+        </StackPanel>
+
     </Grid>
-</Window>
+</UserControl>
