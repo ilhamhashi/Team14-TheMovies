@@ -10,14 +10,15 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace TheMovies.MVVM.View
 {
     /// <summary>
-    /// Interaction logic for MovieBookingView.xaml
+    /// Interaction logic for BookingView.xaml
     /// </summary>
-    public partial class BookingView : Window
+    public partial class BookingView : UserControl
     {
         public BookingView()
         {
