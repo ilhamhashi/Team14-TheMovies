@@ -188,11 +188,25 @@
                                 <StackPanel>
                                     <Label Content="Vælg Biograf: " 
                                        Foreground="AliceBlue"/>
-                                    <ComboBox ItemsSource="{Binding CinemasCollectionView, UpdateSourceTrigger=PropertyChanged}"
+                                    <ComboBox ItemsSource="{Binding HallsCollectionView, UpdateSourceTrigger=PropertyChanged}"
+                                          SelectedItem="{Binding SelectedMovieProgram.Hall, UpdateSourceTrigger=PropertyChanged}"
                                           SelectedValue="{Binding SelectedMovieProgram.Hall.Name, UpdateSourceTrigger=PropertyChanged}"
                                           SelectedValuePath="Name"
-                                          DisplayMemberPath="Name" 
-                                          Margin="0,5,0,10" />
+                                          Margin="0,5,0,10">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock>
+                                                    <TextBlock.Text>
+                                                        <MultiBinding StringFormat="{}{0}, {1}, {2}">
+                                                            <Binding Path="Name"/>
+                                                            <Binding Path="Cinema.Name"/>
+                                                            <Binding Path="Cinema.City"/>
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
                                 </StackPanel>
                             </StackPanel>
 
@@ -204,11 +218,6 @@
                                   SelectedValuePath="title"
                                   DisplayMemberPath="title"
                                   Margin="0,5,0,10" />
-
-                            <Label Content="Forestillingstidpunkt: "
-                               Foreground="AliceBlue"/>
-                            <TextBox Text="{Binding SelectedMovieProgram, UpdateSourceTrigger=PropertyChanged}"
-                                 Height="30" Margin="5 0 5 0"/>
 
                             <Label Content="Premieredato: " 
                                Foreground="AliceBlue"/>
